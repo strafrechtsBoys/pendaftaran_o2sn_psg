@@ -581,7 +581,7 @@
         async function loadSchoolStudents() {
             const data = await callGAS("getSchoolStudents", { npsn: currentUser.npsn });
             if (data) {
-                cachedSchoolStudents = data; // Store in cache for printing
+                cachedSchoolStudents = data; // Simpan di cache untuk filter cetak
                 const table = document.getElementById('studentListTable');
                 table.innerHTML = data.map(s => `
                     <tr class="border-b hover:bg-slate-50 transition-all">
@@ -641,7 +641,7 @@
             f.email.value = school[2];
             f.contact.value = school[6];
             f.mentor1.value = school[4];
-            f.mentor2.value = school[5] || "";
+            f.mentor2 = school[5] || "";
             toggleEditSchoolModal(true);
         }
 
@@ -655,18 +655,13 @@
         }
 
         /**
-         * UPDATED PRINT HELPER
+         * FUNGSI PEMBANTU CETAK
          */
         function preparePrintView(title, sub, data, type) {
-            // Set dynamic uppercase titles
             document.getElementById('printReportTitle').innerText = title.toUpperCase();
             document.getElementById('printSubTitle').innerText = sub.toUpperCase();
             document.getElementById('printDatePlaceholder').innerText = "Dicetak: " + new Date().toLocaleDateString('id-ID');
             
-            // Per user request, remove School Name and NPSN lines from above the table
-            document.getElementById('printHeaderSchool').innerText = "";
-            document.getElementById('printHeaderNpsn').innerText = "";
-
             const h = document.getElementById('printTableHeader');
             const b = document.getElementById('printTableBody');
             
@@ -674,13 +669,12 @@
                 h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left bg-slate-100">NO</th><th class="border border-slate-800 p-2 text-left bg-slate-100">ID SEKOLAH</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NPSN</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NAMA SEKOLAH</th><th class="border border-slate-800 p-2 text-left bg-slate-100">KONTAK</th></tr>`;
                 b.innerHTML = data.map((s, index) => `<tr><td class="border border-slate-800 p-2 text-center">${index + 1}</td><td class="border border-slate-800 p-2 text-xs">SCH-${s[0]}</td><td class="border border-slate-800 p-2 text-xs">${s[0]}</td><td class="border border-slate-800 p-2 text-xs font-bold">${s[3]}</td><td class="border border-slate-800 p-2 text-[10px]">${s[6]}</td></tr>`).join('');
             } else {
-                // Main Athlete Print Format
                 h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-center bg-slate-100">NO</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NAMA ATLET</th><th class="border border-slate-800 p-2 text-center bg-slate-100">JENIS KELAMIN</th><th class="border border-slate-800 p-2 text-left bg-slate-100">CABOR</th><th class="border border-slate-800 p-2 text-left bg-slate-100">KATEGORI LOMBA</th></tr>`;
                 b.innerHTML = data.map((s, index) => `
                     <tr>
                         <td class="border border-slate-800 p-2 text-center text-xs">${index + 1}</td>
                         <td class="border border-slate-800 p-2 text-xs font-bold uppercase">${s.fullName}</td>
-                        <td class="border border-slate-800 p-2 text-center text-xs uppercase">${s.gender === 'Putra' ? 'Laki-laki (L)' : 'Perempuan (P)'}</td>
+                        <td class="border border-slate-800 p-2 text-center text-xs uppercase">${s.gender === 'Putra' ? 'L' : 'P'}</td>
                         <td class="border border-slate-800 p-2 text-xs uppercase">${s.cabor}</td>
                         <td class="border border-slate-800 p-2 text-[10px] uppercase">${s.categories}</td>
                     </tr>
@@ -689,11 +683,11 @@
         }
 
         /**
-         * NEW: Print logic for School Dashboard with filters
+         * CETAK DARI DASHBOARD SEKOLAH DENGAN FILTER
          */
         function printFromSchool() {
             if (!cachedSchoolStudents || cachedSchoolStudents.length === 0) {
-                alert("Tidak ada data untuk dicetak.");
+                alert("Tidak ada data untuk dicetak. Pastikan Anda sudah login dan data atlet muncul di tabel.");
                 return;
             }
 
@@ -719,21 +713,31 @@
             }
 
             preparePrintView(titleString, currentUser.schoolName, filteredData, "school");
-            window.print();
+            
+            // Jeda singkat agar tabel terisi sebelum dialog print terbuka
+            setTimeout(() => {
+                window.print();
+            }, 300);
         }
 
         async function printAllSchools() {
             showLoading(true);
             const data = await callGAS("getAllSchools");
             showLoading(false);
-            if(data) { preparePrintView("REKAP DATA SEKOLAH TERDAFTAR", "O2SN TINGKAT SEKOLAH DASAR", data, "schools"); window.print(); }
+            if(data) { 
+                preparePrintView("REKAP DATA SEKOLAH TERDAFTAR", "O2SN TINGKAT SEKOLAH DASAR", data, "schools"); 
+                setTimeout(() => window.print(), 300);
+            }
         }
 
         async function printAllStudents() {
             showLoading(true);
             const data = await callGAS("getAllStudents");
             showLoading(false);
-            if(data) { preparePrintView("DAFTAR SELURUH ATLET PESERTA", "SEMUA CABANG OLAHRAGA", data, "all"); window.print(); }
+            if(data) { 
+                preparePrintView("DAFTAR SELURUH ATLET PESERTA", "SEMUA CABANG OLAHRAGA", data, "all"); 
+                setTimeout(() => window.print(), 300);
+            }
         }
 
         async function printByCabor() {
@@ -749,7 +753,7 @@
                 
                 const title = `DAFTAR ATLET CABANG ${cabor} ${gender !== "Semua" ? "- " + gender : ""}`;
                 preparePrintView(title, "O2SN TINGKAT SEKOLAH DASAR", filtered, "cabor");
-                window.print();
+                setTimeout(() => window.print(), 300);
             }
         }
 
