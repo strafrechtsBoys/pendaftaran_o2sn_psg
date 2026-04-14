@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <!-- Edit School Modal (Admin Only) -->
+    <!-- Edit School Modal -->
     <div id="editSchoolModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[110] flex items-center justify-center hidden">
         <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-2xl w-full mx-4 border border-slate-100 max-h-[90vh] overflow-y-auto">
             <h3 class="text-xl font-bold text-slate-800 mb-6">Edit Data Sekolah</h3>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-span-full md:col-span-1">
                     <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Password Baru</label>
-                    <input type="text" name="password" placeholder="Kosongkan jika tidak ganti" class="w-full px-4 py-2 border rounded-lg">
+                    <input type="text" name="password" placeholder="Kosongkan jika tidak ganti" class="w-full px-4 py-2 border rounded-lg text-sm">
                 </div>
                 <div class="col-span-full">
                     <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Nama Sekolah</label>
@@ -81,7 +81,7 @@
                     <input type="text" name="mentor2" class="w-full px-4 py-2 border rounded-lg">
                 </div>
                 <div class="flex gap-2 col-span-full mt-4">
-                    <button type="button" onclick="handleUpdateSchool()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">Simpan Perubahan</button>
+                    <button type="button" onclick="handleUpdateSchool()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700">Simpan</button>
                     <button type="button" onclick="toggleEditSchoolModal(false)" class="px-6 py-3 text-slate-500 font-medium hover:text-slate-800 border rounded-xl">Batal</button>
                 </div>
             </form>
@@ -97,11 +97,11 @@
 
         <main id="mainContent">
             <!-- View: Home -->
-            <div id="view-home" class="">
+            <div id="view-home">
                 <div class="grid md:grid-cols-2 gap-8 items-center mb-12">
                     <div class="space-y-6">
                         <h2 class="text-4xl font-bold text-slate-900 leading-tight">Portal Registrasi O2SN SD</h2>
-                        <p class="text-lg text-slate-600">Pendaftaran resmi atlet tingkat Sekolah Dasar. Kelola data sekolah dan siswa secara digital di GitHub & Google Sheets.</p>
+                        <p class="text-lg text-slate-600">Pendaftaran resmi atlet tingkat Sekolah Dasar. Data tersimpan otomatis di Google Spreadsheet Anda.</p>
                         <div class="flex flex-wrap gap-4">
                             <button onclick="showView('login')" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all">Login Sekolah</button>
                             <button onclick="showView('register')" class="bg-white border-2 border-slate-200 hover:border-blue-600 text-slate-700 px-8 py-3 rounded-xl font-semibold transition-all">Daftar Akun Baru</button>
@@ -112,32 +112,32 @@
                             <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100">
                                 <i class="fas fa-swimmer text-blue-500 text-3xl mb-2"></i>
                                 <p class="font-bold text-sm">Renang</p>
-                                <p id="stats-Renang" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1 italic">Memuat...</p>
+                                <p id="stats-Renang" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
                             </div>
                             <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100">
                                 <i class="fas fa-running text-orange-500 text-3xl mb-2"></i>
                                 <p class="font-bold text-sm">Atletik</p>
-                                <p id="stats-Atletik" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1 italic">Memuat...</p>
+                                <p id="stats-Atletik" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
                             </div>
                             <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100">
                                 <i class="fas fa-medal text-yellow-500 text-3xl mb-2"></i>
                                 <p class="font-bold text-sm">Senam</p>
-                                <p id="stats-Senam" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1 italic">Memuat...</p>
+                                <p id="stats-Senam" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
                             </div>
                             <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100">
                                 <i class="fas fa-fist-raised text-red-500 text-3xl mb-2"></i>
                                 <p class="font-bold text-sm">Silat</p>
-                                <p id="stats-Pencak Silat" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1 italic">Memuat...</p>
+                                <p id="stats-Pencak Silat" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
                             </div>
                             <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100">
                                 <i class="fas fa-table-tennis text-green-500 text-3xl mb-2"></i>
                                 <p class="font-bold text-sm">Bulutangkis</p>
-                                <p id="stats-Bulutangkis" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1 italic">Memuat...</p>
+                                <p id="stats-Bulutangkis" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-span-full mt-10 text-center">
+                <div class="text-center">
                     <button onclick="toggleAdminModal(true)" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fas fa-lock mr-1"></i> Admin Login</button>
                 </div>
             </div>
@@ -149,7 +149,7 @@
                     <div class="space-y-4">
                         <input type="text" id="loginNpsn" placeholder="NPSN" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none">
                         <input type="password" id="loginPass" placeholder="Password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none">
-                        <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">Masuk</button>
+                        <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg transition-all">Masuk</button>
                         <button onclick="showView('home')" class="w-full text-slate-500 text-sm">Kembali</button>
                     </div>
                 </div>
@@ -159,7 +159,6 @@
             <div id="view-register" class="hidden max-w-2xl mx-auto">
                 <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
                     <h3 class="text-2xl font-bold mb-6 text-slate-800 border-b pb-4">Registrasi Sekolah Baru</h3>
-                    <p class="text-xs text-red-500 mb-4">* Semua kolom wajib diisi kecuali Nama Pendamping 2</p>
                     <form id="regForm" class="grid md:grid-cols-2 gap-4">
                         <input type="text" name="npsn" placeholder="NPSN (Wajib)" required class="px-4 py-2 border rounded-lg">
                         <input type="password" name="password" placeholder="Password (Wajib)" required class="px-4 py-2 border rounded-lg">
@@ -167,9 +166,9 @@
                         <input type="email" name="email" placeholder="Email Sekolah (Wajib)" required class="px-4 py-2 border rounded-lg">
                         <input type="text" name="contact" placeholder="Kontak WhatsApp (Wajib)" required class="px-4 py-2 border rounded-lg">
                         <input type="text" name="mentor1" placeholder="Nama Pendamping 1 (Wajib)" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="mentor2" placeholder="Nama Pendamping 2 (Boleh Kosong)" class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="mentor2" placeholder="Nama Pendamping 2 (Opsional)" class="px-4 py-2 border rounded-lg">
                         <input type="email" name="mentorEmail" placeholder="Email Pendamping (Wajib)" required class="col-span-full px-4 py-2 border rounded-lg">
-                        <button type="button" onclick="handleRegister()" class="col-span-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4 shadow-lg hover:bg-blue-700 transition-all">Daftar Akun</button>
+                        <button type="button" onclick="handleRegister()" class="col-span-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4 shadow-lg hover:bg-blue-700">Daftar Akun</button>
                         <button type="button" onclick="showView('home')" class="col-span-full text-slate-500">Batal</button>
                     </form>
                 </div>
@@ -180,7 +179,7 @@
                 <div class="flex justify-between items-center mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                     <div>
                         <h3 class="text-2xl font-bold text-slate-800" id="dashSchoolName">Dashboard</h3>
-                        <p class="text-slate-500 font-mono text-sm">ID Sekolah: <span id="dashSchoolId" class="text-blue-600"></span> | NPSN: <span id="dashNpsn"></span></p>
+                        <p class="text-slate-500 font-mono text-sm">ID Sekolah: <span id="dashSchoolId" class="text-blue-600 font-bold"></span> | NPSN: <span id="dashNpsn"></span></p>
                     </div>
                     <button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold">Keluar</button>
                 </div>
@@ -216,13 +215,13 @@
                     <div class="md:col-span-2 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 min-h-[400px]">
                         <div class="flex justify-between items-center mb-4">
                             <h4 class="font-bold text-lg">Daftar Atlet Sekolah</h4>
-                            <button onclick="window.print()" class="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg text-sm font-bold"><i class="fas fa-print mr-1"></i> Cetak / PDF</button>
+                            <button onclick="window.print()" class="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg text-sm font-bold shadow-sm"><i class="fas fa-print mr-1"></i> Cetak / PDF</button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead>
                                     <tr class="text-slate-500 border-b text-left bg-slate-50">
-                                        <th class="py-3 px-2">ID Atlet</th>
+                                        <th class="py-3 px-2">Kode Atlet (Unik)</th>
                                         <th class="py-3 px-2">Nama Siswa</th>
                                         <th class="py-3 px-2">Cabor</th>
                                         <th class="py-3 px-2">Kategori</th>
@@ -239,20 +238,21 @@
             <div id="view-admin" class="hidden space-y-8">
                 <div class="flex justify-between items-center">
                     <h3 class="text-2xl font-bold text-slate-800">Panel Administrator</h3>
-                    <button onclick="showView('home')" class="text-slate-500 font-bold">Kembali</button>
+                    <button onclick="showView('home')" class="text-slate-500 font-bold hover:text-slate-800 transition-colors">Kembali</button>
                 </div>
 
+                <!-- Laporan & Print Tools -->
                 <div class="grid md:grid-cols-3 gap-6">
                     <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-blue-600">
-                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-file-invoice mr-2"></i> Laporan Rekapitulasi</h4>
+                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-file-invoice mr-2 text-blue-500"></i> Laporan Rekap</h4>
                         <div class="space-y-3">
-                            <button onclick="printAllSchools()" class="w-full bg-slate-800 text-white py-2 rounded-lg text-sm font-bold shadow hover:bg-black">Cetak Sekolah</button>
-                            <button onclick="printAllStudents()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700">Cetak Seluruh Atlet</button>
+                            <button onclick="printAllSchools()" class="w-full bg-slate-800 text-white py-2 rounded-lg text-sm font-bold shadow hover:bg-black transition-all">Cetak Sekolah</button>
+                            <button onclick="printAllStudents()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-all">Cetak Seluruh Atlet</button>
                         </div>
                     </div>
 
                     <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-green-600">
-                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-filter mr-2"></i> Cetak per Cabang</h4>
+                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-filter mr-2 text-green-500"></i> Cetak Per Cabang</h4>
                         <div class="space-y-3">
                             <div class="grid grid-cols-2 gap-2">
                                 <select id="printCaborFilter" class="w-full px-3 py-2 border rounded-lg text-xs">
@@ -268,36 +268,55 @@
                                     <option value="Putri">Putri</option>
                                 </select>
                             </div>
-                            <button onclick="printByCabor()" class="w-full bg-green-600 text-white py-2 rounded-lg text-sm font-bold shadow">Cetak Filtered</button>
+                            <button onclick="printByCabor()" class="w-full bg-green-600 text-white py-2 rounded-lg text-sm font-bold shadow hover:bg-green-700">Cetak Laporan</button>
                         </div>
                     </div>
 
                     <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-slate-400">
-                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-cogs mr-2"></i> Pengaturan Web</h4>
+                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-cogs mr-2"></i> Branding</h4>
                         <div class="space-y-3">
                             <input type="text" id="settingAppName" placeholder="Nama Aplikasi" class="w-full px-3 py-1 border rounded text-xs">
                             <input type="text" id="settingLogoUrl" placeholder="URL Logo" class="w-full px-3 py-1 border rounded text-xs">
                             <input type="text" id="settingWebAppUrl" placeholder="Web App URL" class="w-full px-3 py-1 border rounded text-xs">
-                            <button onclick="saveAdminSettings()" class="w-full bg-slate-100 text-slate-700 py-1 rounded text-xs font-bold shadow-sm">Simpan Pengaturan</button>
+                            <button onclick="saveAdminSettings()" class="w-full bg-slate-100 text-slate-700 py-1 rounded text-xs font-bold shadow-sm">Update</button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Admin Tables -->
                 <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-100">
-                    <h4 class="font-bold mb-4 text-slate-800">Daftar Sekolah & Akun (Admin Edit)</h4>
+                    <h4 class="font-bold mb-4 text-slate-800 flex items-center"><i class="fas fa-university mr-2 text-blue-500"></i> Akun Sekolah (ID & Edit)</h4>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="bg-slate-50 border-b">
                                 <tr>
-                                    <th class="py-3 px-2">ID</th>
+                                    <th class="py-3 px-2">ID Sekolah</th>
                                     <th class="py-3 px-2">NPSN</th>
-                                    <th class="py-3 px-2">Nama Sekolah</th>
-                                    <th class="py-3 px-2">Email Akun</th>
+                                    <th class="py-3 px-2">Sekolah</th>
+                                    <th class="py-3 px-2">Email</th>
                                     <th class="py-3 px-2">Password</th>
-                                    <th class="py-3 px-2">Aksi</th>
+                                    <th class="py-3 px-2 text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="schoolListTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-100">
+                    <h4 class="font-bold mb-4 text-slate-800 flex items-center"><i class="fas fa-users mr-2 text-green-500"></i> Rekap Kode Unik Seluruh Atlet</h4>
+                    <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 border-b sticky top-0 z-10">
+                                <tr>
+                                    <th class="py-3 px-2">Kode Unik Atlet</th>
+                                    <th class="py-3 px-2">Nama Siswa</th>
+                                    <th class="py-3 px-2">Asal Sekolah</th>
+                                    <th class="py-3 px-2">Cabor</th>
+                                    <th class="py-3 px-2">Gender</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminStudentListTable"></tbody>
                         </table>
                     </div>
                 </div>
@@ -328,16 +347,14 @@
         /**
          * =========================================================================
          * TANDA MANUAL: TEMPEL URL WEB APP ANDA DI BAWAH INI
-         * (Dapatkan link ini dari Deploy > New Deployment di Google Apps Script)
          * =========================================================================
          */
         const MANUAL_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyckGrwotriQte2ufeWRXncLkOXq6hcMuRFBPr16hFlmYwBQspWriT9t0wnKnNBJAH_/exec";
         /** ========================================================================= */
 
-        // Wrapper untuk memanggil API GAS dari GitHub via Fetch
         async function callGAS(action, data = {}) {
-            if (MANUAL_WEB_APP_URL === "MASUKKAN_URL_WEBAPP_GAS_ANDA_DISINI") {
-                alert("PENTING: Masukkan URL Web App Google Apps Script di dalam kode (const MANUAL_WEB_APP_URL) agar aplikasi bisa bekerja.");
+            if (MANUAL_WEB_APP_URL === "TEMPEL_URL_WEBAPP_GAS_ANDA_DISINI") {
+                alert("PENTING: Masukkan URL Web App Google Apps Script di variabel MANUAL_WEB_APP_URL.");
                 return null;
             }
             try {
@@ -345,17 +362,18 @@
                     method: 'POST',
                     body: JSON.stringify({ action, data })
                 });
-                return await response.json();
+                const result = await response.json();
+                return result;
             } catch (err) {
                 console.error("Fetch error:", err);
-                alert("Gagal terhubung ke Database. Pastikan URL Web App benar dan sudah di-Deploy.");
+                alert("Gagal terhubung ke Database. Pastikan URL benar.");
                 return null;
             }
         }
 
         let currentUser = null;
         let appConfig = {};
-        let cachedSchools = []; // Menyimpan data sekolah sementara untuk keperluan edit
+        let cachedSchools = [];
 
         window.onload = async () => {
             await loadAppData();
@@ -422,27 +440,15 @@
         async function handleRegister() {
             const form = document.getElementById('regForm');
             const data = Object.fromEntries(new FormData(form));
-            
-            // Validasi: Wajib isi semua kecuali mentor2
             const requiredFields = ['npsn', 'password', 'schoolName', 'email', 'contact', 'mentor1', 'mentorEmail'];
             let isValid = true;
-            requiredFields.forEach(f => {
-                if(!data[f] || data[f].trim() === "") isValid = false;
-            });
-
-            if(!isValid) {
-                alert("ERROR: Pendaftaran Gagal! Semua kolom wajib diisi kecuali Nama Pendamping 2.");
-                return;
-            }
-
+            requiredFields.forEach(f => { if(!data[f] || data[f].trim() === "") isValid = false; });
+            if(!isValid) { alert("ERROR: Semua kolom wajib diisi kecuali Nama Pendamping 2."); return; }
             showLoading(true);
             const res = await callGAS("registerSchool", data);
             showLoading(false);
-            if(res && res.success) { 
-                alert("Selamat! Registrasi Berhasil. Silakan login menggunakan NPSN dan Password."); 
-                form.reset();
-                showView('login'); 
-            } else alert(res ? res.message : "Terjadi kesalahan registrasi.");
+            if(res && res.success) { alert("Registrasi Berhasil! Silakan login."); form.reset(); showView('login'); } 
+            else alert(res ? res.message : "Terjadi kesalahan.");
         }
 
         function logout() { currentUser = null; showView('home'); }
@@ -460,10 +466,9 @@
             else if(cabor === 'Bulutangkis') items = ['Tunggal'];
             else if(cabor === 'Pencak Silat') items = ['Jurus Tunggal (Wajib)', 'Tanding Kelas H (40-42 Kg)'];
             else if(cabor === 'Senam') items = ['Perorangan Serba Bisa'];
-
             items.forEach(item => {
                 const isSilatWajib = item.includes('(Wajib)');
-                list.innerHTML += `<label class="flex items-center gap-2 text-xs"><input type="checkbox" name="categories" value="${item}" ${isSilatWajib ? 'checked disabled' : ''}> ${item}</label>`;
+                list.innerHTML += `<label class="flex items-center gap-2 text-xs py-1"><input type="checkbox" name="categories" value="${item}" ${isSilatWajib ? 'checked disabled' : ''}> ${item}</label>`;
             });
         }
 
@@ -473,15 +478,12 @@
             const checks = Array.from(form.querySelectorAll('input[name="categories"]:checked'));
             data.categories = checks.map(c => c.value);
             data.npsn = currentUser.npsn;
-            
-            // Generate unique student code based on NISN and Cabor
             const studentCode = "ATL-" + data.nisn + "-" + data.cabor.substring(0,3).toUpperCase();
             data.uniqueCode = studentCode;
-
             showLoading(true);
             const res = await callGAS("addStudent", data);
             showLoading(false);
-            if(res && res.success) { form.reset(); updateCategories(); loadSchoolStudents(); alert("Atlet berhasil terdaftar dengan Kode: " + studentCode); }
+            if(res && res.success) { form.reset(); updateCategories(); loadSchoolStudents(); alert("Berhasil! Kode Atlet: " + studentCode); }
         }
 
         async function loadSchoolStudents() {
@@ -490,9 +492,9 @@
                 const table = document.getElementById('studentListTable');
                 table.innerHTML = data.map(s => `
                     <tr class="border-b hover:bg-slate-50">
-                        <td class="py-2 px-2 font-mono text-xs text-blue-600">${s.uniqueCode || 'ATL-' + s.nisn}</td>
+                        <td class="py-2 px-2 font-mono text-xs text-blue-600 font-bold">${s.uniqueCode || 'ATL-' + s.nisn}</td>
                         <td class="py-2 px-2 font-bold">${s.fullName}<br><span class="text-xs text-slate-400">NISN: ${s.nisn}</span></td>
-                        <td class="py-2 px-2 text-xs">${s.cabor} (${s.gender})</td>
+                        <td class="py-2 px-2 text-xs font-semibold">${s.cabor} (${s.gender})</td>
                         <td class="py-2 px-2 text-[10px] italic text-slate-500">${s.categories}</td>
                     </tr>
                 `).join('');
@@ -501,75 +503,77 @@
         }
 
         async function loadAdminData() {
-            const data = await callGAS("getAllSchools");
-            if (data) {
-                cachedSchools = data;
-                document.getElementById('schoolListTable').innerHTML = data.map((s, idx) => `
-                    <tr class="border-b hover:bg-blue-50 transition-all">
-                        <td class="py-2 px-2 font-mono text-xs text-slate-400">SCH-${s[0]}</td>
-                        <td class="py-2 px-2 font-bold">${s[0]}</td>
-                        <td class="py-2 px-2 text-xs font-semibold">${s[3]}</td>
+            showLoading(true);
+            const schoolData = await callGAS("getAllSchools");
+            if (schoolData) {
+                cachedSchools = schoolData;
+                document.getElementById('schoolListTable').innerHTML = schoolData.map(s => `
+                    <tr class="border-b hover:bg-blue-50 transition-colors">
+                        <td class="py-2 px-2 font-mono text-[10px] text-slate-400">SCH-${s[0]}</td>
+                        <td class="py-2 px-2 text-xs">${s[0]}</td>
+                        <td class="py-2 px-2 font-bold text-xs">${s[3]}</td>
                         <td class="py-2 px-2 text-[10px]">${s[2]}</td>
-                        <td class="py-2 px-2 font-mono text-xs bg-slate-100">${s[1]}</td>
-                        <td class="py-2 px-2">
-                            <button onclick="openEditSchool('${s[0]}')" class="text-blue-600 hover:text-blue-800 p-1 border rounded shadow-sm bg-white">
-                                <i class="fas fa-edit mr-1"></i>Edit
+                        <td class="py-2 px-2 font-mono text-[10px] bg-slate-50">${s[1]}</td>
+                        <td class="py-2 px-2 text-center">
+                            <button onclick="openEditSchool('${s[0]}')" class="text-blue-600 hover:text-blue-800 p-1 border rounded bg-white shadow-sm text-xs">
+                                <i class="fas fa-edit"></i> Edit
                             </button>
                         </td>
                     </tr>
                 `).join('');
             }
+            const studentData = await callGAS("getAllStudents");
+            if (studentData) {
+                document.getElementById('adminStudentListTable').innerHTML = studentData.map(s => `
+                    <tr class="border-b hover:bg-green-50">
+                        <td class="py-2 px-2 font-mono text-xs text-blue-700 font-bold">${s.uniqueCode || 'ATL-'+s.nisn}</td>
+                        <td class="py-2 px-2 font-bold text-xs">${s.fullName}</td>
+                        <td class="py-2 px-2 text-[10px]">${s.schoolName}</td>
+                        <td class="py-2 px-2 text-xs">${s.cabor}</td>
+                        <td class="py-2 px-2 text-xs">${s.gender}</td>
+                    </tr>
+                `).join('');
+            }
+            showLoading(false);
         }
 
-        // Admin Edit Logic
         function toggleEditSchoolModal(s) { document.getElementById('editSchoolModal').classList.toggle('hidden', !s); }
-        
         function openEditSchool(npsn) {
             const school = cachedSchools.find(s => s[0].toString() === npsn.toString());
             if(!school) return;
-
-            const form = document.getElementById('editSchoolForm');
-            form.oldNpsn.value = school[0];
-            form.npsn.value = school[0];
-            form.password.value = ""; // Don't show current password for security, let them overwrite
-            form.schoolName.value = school[3];
-            form.email.value = school[2];
-            form.contact.value = school[6];
-            form.mentor1.value = school[4];
-            form.mentor2.value = school[5] || "";
-
+            const f = document.getElementById('editSchoolForm');
+            f.oldNpsn.value = school[0];
+            f.npsn.value = school[0];
+            f.password.value = "";
+            f.schoolName.value = school[3];
+            f.email.value = school[2];
+            f.contact.value = school[6];
+            f.mentor1.value = school[4];
+            f.mentor2.value = school[5] || "";
             toggleEditSchoolModal(true);
         }
 
         async function handleUpdateSchool() {
-            const form = document.getElementById('editSchoolForm');
-            const data = Object.fromEntries(new FormData(form));
-            
+            const data = Object.fromEntries(new FormData(document.getElementById('editSchoolForm')));
             showLoading(true);
-            const res = await callGAS("updateSchoolData", data); // Make sure backend supports updateSchoolData
+            const res = await callGAS("updateSchoolData", data);
             showLoading(false);
-            
-            if(res && res.success) {
-                alert("Data sekolah berhasil diperbarui!");
-                toggleEditSchoolModal(false);
-                loadAdminData();
-            } else {
-                alert("Gagal memperbarui data: " + (res ? res.message : "Timeout"));
-            }
+            if(res && res.success) { alert("Berhasil diupdate!"); toggleEditSchoolModal(false); loadAdminData(); } 
+            else alert("Error: " + (res ? res.message : "Unknown"));
         }
 
         function preparePrintView(title, sub, data, type) {
             document.getElementById('printReportTitle').innerText = title;
             document.getElementById('printSubTitle').innerText = sub;
-            document.getElementById('printDatePlaceholder').innerText = "Tgl: " + new Date().toLocaleDateString('id-ID');
+            document.getElementById('printDatePlaceholder').innerText = "Dicetak: " + new Date().toLocaleDateString('id-ID');
             const h = document.getElementById('printTableHeader');
             const b = document.getElementById('printTableBody');
             if (type === "schools") {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2">ID</th><th class="border border-slate-800 p-2">NPSN</th><th class="border border-slate-800 p-2">Sekolah</th><th class="border border-slate-800 p-2">Kontak</th></tr>`;
-                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2 text-xs">SCH-${s[0]}</td><td class="border border-slate-800 p-2">${s[0]}</td><td class="border border-slate-800 p-2">${s[3]}</td><td class="border border-slate-800 p-2">${s[6]}</td></tr>`).join('');
+                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left">ID</th><th class="border border-slate-800 p-2 text-left">NPSN</th><th class="border border-slate-800 p-2 text-left">Sekolah</th><th class="border border-slate-800 p-2 text-left">Kontak</th></tr>`;
+                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2 text-[10px]">SCH-${s[0]}</td><td class="border border-slate-800 p-2 text-xs">${s[0]}</td><td class="border border-slate-800 p-2 text-xs font-bold">${s[3]}</td><td class="border border-slate-800 p-2 text-[10px]">${s[6]}</td></tr>`).join('');
             } else {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2">Kode Atlet</th><th class="border border-slate-800 p-2">Nama</th><th class="border border-slate-800 p-2">L/P</th><th class="border border-slate-800 p-2">Cabor</th></tr>`;
-                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2 font-mono text-xs">${s.uniqueCode || 'ATL-'+s.nisn}</td><td class="border border-slate-800 p-2">${s.fullName}</td><td class="border border-slate-800 p-2 text-center">${s.gender === 'Putra' ? 'L' : 'P'}</td><td class="border border-slate-800 p-2">${s.cabor}</td></tr>`).join('');
+                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left">Kode Atlet (Unik)</th><th class="border border-slate-800 p-2 text-left">Nama</th><th class="border border-slate-800 p-2 text-center">L/P</th><th class="border border-slate-800 p-2 text-left">Cabor</th></tr>`;
+                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2 font-mono text-[10px] font-bold">${s.uniqueCode || 'ATL-'+s.nisn}</td><td class="border border-slate-800 p-2 text-xs">${s.fullName}</td><td class="border border-slate-800 p-2 text-center text-xs">${s.gender === 'Putra' ? 'L' : 'P'}</td><td class="border border-slate-800 p-2 text-xs">${s.cabor}</td></tr>`).join('');
             }
         }
 
@@ -577,14 +581,14 @@
             showLoading(true);
             const data = await callGAS("getAllSchools");
             showLoading(false);
-            if(data) { preparePrintView("DAFTAR SEKOLAH TERDAFTAR", "O2SN SD", data, "schools"); window.print(); }
+            if(data) { preparePrintView("REKAP DATA SEKOLAH", "O2SN TINGKAT SD", data, "schools"); window.print(); }
         }
 
         async function printAllStudents() {
             showLoading(true);
             const data = await callGAS("getAllStudents");
             showLoading(false);
-            if(data) { preparePrintView("REKAPITULASI ATLET", "SELURUH CABANG", data, "all"); window.print(); }
+            if(data) { preparePrintView("REKAP DATA ATLET", "SELURUH CABANG", data, "all"); window.print(); }
         }
 
         async function printByCabor() {
@@ -596,7 +600,8 @@
             if(data) {
                 let filtered = data.filter(s => s.cabor === cabor);
                 if (gender !== "Semua") filtered = filtered.filter(s => s.gender === gender);
-                preparePrintView("REKAP ATLET", "CABOR: " + cabor.toUpperCase() + " (" + gender + ")", filtered, "cabor");
+                if(filtered.length === 0) return alert("Data tidak ditemukan.");
+                preparePrintView("LAPORAN ATLET", "CABOR: " + cabor.toUpperCase() + " (" + gender + ")", filtered, "cabor");
                 window.print();
             }
         }
@@ -611,7 +616,7 @@
             await callGAS("updateSettings", data);
             await loadAppData();
             showLoading(false);
-            alert("Pengaturan disimpan!");
+            alert("Berhasil!");
         }
     </script>
 </body>
