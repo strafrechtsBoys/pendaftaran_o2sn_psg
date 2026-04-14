@@ -9,17 +9,30 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        
+        /* CSS KHUSUS CETAK - DIPERBAIKI */
         @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            body { background: white; margin: 0; padding: 0; }
-            @page { margin: 1cm; }
+            body * { visibility: hidden !important; }
+            #printArea, #printArea * { visibility: visible !important; }
+            #printArea { 
+                display: block !important; 
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            @page { margin: 1cm; size: A4; }
+            table { width: 100% !important; border-collapse: collapse !important; table-layout: auto !important; }
+            th, td { border: 1px solid black !important; padding: 6px !important; color: black !important; }
         }
         .print-only { display: none; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen">
 
+    <!-- Loading Overlay -->
     <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center hidden">
         <div class="bg-white p-5 rounded-lg flex flex-col items-center shadow-2xl">
             <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-2"></div>
@@ -89,6 +102,7 @@
         </div>
     </div>
 
+    <!-- MAIN APP CONTAINER -->
     <div id="app" class="max-w-6xl mx-auto px-4 py-8 no-print">
         <header class="flex flex-col items-center mb-10 text-center">
             <img id="appLogo" src="https://via.placeholder.com/100" alt="Logo" class="h-24 w-auto mb-4 object-contain">
@@ -278,14 +292,14 @@
                         <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-filter mr-2 text-green-500"></i> Cetak Per Cabang</h4>
                         <div class="space-y-3">
                             <div class="grid grid-cols-2 gap-2">
-                                <select id="printCaborFilter" class="w-full px-3 py-2 border rounded-lg text-xs">
+                                <select id="printCaborFilter" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-blue-500 outline-none">
                                     <option value="Renang">Renang</option>
                                     <option value="Atletik">Atletik</option>
                                     <option value="Bulutangkis">Bulutangkis</option>
                                     <option value="Pencak Silat">Silat</option>
                                     <option value="Senam">Senam</option>
                                 </select>
-                                <select id="printGenderFilter" class="w-full px-3 py-2 border rounded-lg text-xs">
+                                <select id="printGenderFilter" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-blue-500 outline-none">
                                     <option value="Semua">Semua</option>
                                     <option value="Putra">Putra</option>
                                     <option value="Putri">Putri</option>
@@ -303,7 +317,11 @@
                                 <input type="text" id="settingAppName" placeholder="Nama Aplikasi" class="w-full px-3 py-1 border rounded text-xs">
                             </div>
                             <div>
-                                <label class="text-[10px] uppercase font-bold text-slate-400">Logo Utama (Kiri/O2SN)</label>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Password Login Admin</label>
+                                <input type="text" id="settingAdminPassword" placeholder="Ganti Password Admin" class="w-full px-3 py-1 border rounded text-xs bg-yellow-50">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Logo Utama (Kiri)</label>
                                 <input type="text" id="settingLogoUrl" placeholder="URL Logo PNG" class="w-full px-3 py-1 border rounded text-xs">
                             </div>
                             <div>
@@ -311,7 +329,7 @@
                                 <input type="text" id="settingLogoKkgUrl" placeholder="URL Logo KKG PNG" class="w-full px-3 py-1 border rounded text-xs">
                             </div>
                             <div>
-                                <label class="text-[10px] uppercase font-bold text-slate-400">Web App URL</label>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Web App URL (GAS)</label>
                                 <input type="text" id="settingWebAppUrl" placeholder="Web App URL" class="w-full px-3 py-1 border rounded text-xs">
                             </div>
                             <div>
@@ -322,7 +340,7 @@
                                 <label class="text-[10px] uppercase font-bold text-slate-400">TTD Admin (URL PNG)</label>
                                 <input type="text" id="settingTtdAdminUrl" placeholder="Link PNG TTD Admin" class="w-full px-3 py-1 border rounded text-xs">
                             </div>
-                            <button onclick="saveAdminSettings()" class="w-full bg-slate-100 text-slate-700 py-1 rounded text-xs font-bold shadow-sm">Simpan Perubahan</button>
+                            <button onclick="saveAdminSettings()" class="w-full bg-slate-100 text-slate-700 py-1 rounded text-xs font-bold shadow-sm hover:bg-slate-200 transition-all">Simpan Perubahan</button>
                         </div>
                     </div>
                 </div>
@@ -368,18 +386,17 @@
         </main>
     </div>
 
-    <!-- PRINT PREVIEW -->
+    <!-- AREA PRINT (HIDDEN PADA SCREEN, MUNCUL PADA MEDIA PRINT) -->
     <div id="printArea" class="print-only p-12 bg-white min-h-screen text-slate-900">
-        <!-- Header for Logos and App Title -->
+        <!-- Header Logos -->
         <div class="flex justify-between items-center border-b-4 border-double border-slate-800 pb-4 mb-6">
-            <img id="printLogoLeft" src="" class="h-20 w-auto object-contain" alt="Logo O2SN">
+            <img id="printLogoLeft" src="" class="h-20 w-auto object-contain" alt="Logo Kiri">
             <div class="text-center flex-1 mx-4">
-                <!-- App Branding as Sub-header if exists -->
                 <p id="printAppBranding" class="text-[10px] font-medium italic mb-1 uppercase"></p>
-                <h1 id="printReportTitle" class="text-xl font-black uppercase mb-1 leading-tight">JUDUL LAPORAN</h1>
-                <h2 id="printSubTitle" class="text-lg font-bold uppercase">SUB JUDUL</h2>
+                <h1 id="printReportTitle" class="text-xl font-black uppercase mb-1 leading-tight text-center">JUDUL LAPORAN</h1>
+                <h2 id="printSubTitle" class="text-lg font-bold uppercase text-center">SUB JUDUL</h2>
             </div>
-            <img id="printLogoRight" src="" class="h-20 w-auto object-contain" alt="Logo KKG">
+            <img id="printLogoRight" src="" class="h-20 w-auto object-contain" alt="Logo Kanan">
         </div>
 
         <div id="printContentArea">
@@ -389,6 +406,7 @@
             </table>
         </div>
 
+        <!-- Footer Signatures -->
         <div class="mt-20 grid grid-cols-2 text-center text-sm">
             <div class="flex flex-col items-center">
                 <p>Mengetahui,</p>
@@ -418,9 +436,10 @@
         const MANUAL_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyckGrwotriQte2ufeWRXncLkOXq6hcMuRFBPr16hFlmYwBQspWriT9t0wnKnNBJAH_/exec";
         /** ========================================================================= */
 
+        // API CALL WRAPPER
         async function callGAS(action, data = {}) {
-            if (MANUAL_WEB_APP_URL === "TEMPEL_URL_WEBAPP_GAS_ANDA_DISINI") {
-                alert("PENTING: Masukkan URL Web App Google Apps Script di variabel MANUAL_WEB_APP_URL.");
+            if (!MANUAL_WEB_APP_URL || MANUAL_WEB_APP_URL.includes("TEMPEL_URL")) {
+                alert("PENTING: Masukkan URL Web App Google Apps Script di variabel MANUAL_WEB_APP_URL agar aplikasi bisa bekerja.");
                 return null;
             }
             try {
@@ -432,7 +451,7 @@
                 return result;
             } catch (err) {
                 console.error("Fetch error:", err);
-                alert("Gagal terhubung ke Database. Pastikan URL benar.");
+                alert("Gagal terhubung ke Database. Pastikan URL Web App benar.");
                 return null;
             }
         }
@@ -440,7 +459,8 @@
         let currentUser = null;
         let appConfig = {};
         let cachedSchools = [];
-        let cachedSchoolStudents = []; // Cache students for filtered printing
+        let cachedSchoolStudents = [];
+        let cachedAdminStudents = []; // Cache data atlet untuk Admin
 
         window.onload = async () => {
             await loadAppData();
@@ -454,10 +474,11 @@
             const data = await callGAS("getAppData");
             if (data) {
                 appConfig = data;
-                document.getElementById('appName').innerText = data.appName;
-                document.getElementById('appLogo').src = data.logoUrl;
+                document.getElementById('appName').innerText = data.appName || "O2SN SD";
+                document.getElementById('appLogo').src = data.logoUrl || "https://via.placeholder.com/100";
                 
-                document.getElementById('printLogoLeft').src = data.logoUrl;
+                // Set Images for Print View
+                document.getElementById('printLogoLeft').src = data.logoUrl || "";
                 const logoKkgEl = document.getElementById('printLogoRight');
                 if(data.logoKkgUrl) {
                     logoKkgEl.src = data.logoKkgUrl;
@@ -468,23 +489,20 @@
 
                 if (document.getElementById('printAppBranding')) document.getElementById('printAppBranding').innerText = data.appName;
                 
+                // Admin Inputs
                 document.getElementById('settingAppName').value = data.appName;
+                document.getElementById('settingAdminPassword').value = data.adminPassword || 'admin';
                 document.getElementById('settingLogoUrl').value = data.logoUrl;
                 document.getElementById('settingLogoKkgUrl').value = data.logoKkgUrl || '';
                 document.getElementById('settingWebAppUrl').value = MANUAL_WEB_APP_URL;
                 document.getElementById('settingTtdKetuaUrl').value = data.ttdKetuaUrl || '';
                 document.getElementById('settingTtdAdminUrl').value = data.ttdAdminUrl || '';
 
-                if(data.ttdKetuaUrl) {
-                    const imgKetua = document.getElementById('printTtdKetua');
-                    imgKetua.src = data.ttdKetuaUrl;
-                    imgKetua.classList.remove('hidden');
-                }
-                if(data.ttdAdminUrl) {
-                    const imgAdmin = document.getElementById('printTtdAdmin');
-                    imgAdmin.src = data.ttdAdminUrl;
-                    imgAdmin.classList.remove('hidden');
-                }
+                // Signatures
+                const ttdKetua = document.getElementById('printTtdKetua');
+                const ttdAdmin = document.getElementById('printTtdAdmin');
+                if(data.ttdKetuaUrl) { ttdKetua.src = data.ttdKetuaUrl; ttdKetua.classList.remove('hidden'); }
+                if(data.ttdAdminUrl) { ttdAdmin.src = data.ttdAdminUrl; ttdAdmin.classList.remove('hidden'); }
             }
             showLoading(false);
         }
@@ -501,16 +519,24 @@
 
         function showView(viewId) {
             const views = ['home', 'login', 'register', 'dashboard', 'admin'];
-            views.forEach(v => document.getElementById('view-' + v).classList.add('hidden'));
-            document.getElementById('view-' + viewId).classList.remove('hidden');
+            views.forEach(v => {
+                const el = document.getElementById('view-' + v);
+                if (el) el.classList.add('hidden');
+            });
+            const target = document.getElementById('view-' + viewId);
+            if (target) target.classList.remove('hidden');
+            
             if(viewId === 'dashboard') loadSchoolStudents();
             if(viewId === 'admin') loadAdminData();
             if(viewId === 'home') loadCaborStats();
         }
 
         function toggleAdminModal(s) { document.getElementById('adminLoginModal').classList.toggle('hidden', !s); }
+        
         function verifyAdmin() {
-            if(document.getElementById('adminInputPass').value === "admin") { toggleAdminModal(false); showView('admin'); }
+            const passInput = document.getElementById('adminInputPass').value;
+            const correctPass = appConfig.adminPassword || 'admin';
+            if(passInput === correctPass) { toggleAdminModal(false); showView('admin'); }
             else alert("Password admin salah!");
         }
 
@@ -535,7 +561,7 @@
             const requiredFields = ['npsn', 'password', 'schoolName', 'email', 'contact', 'mentor1', 'mentorEmail'];
             let isValid = true;
             requiredFields.forEach(f => { if(!data[f] || data[f].trim() === "") isValid = false; });
-            if(!isValid) { alert("ERROR: Semua kolom wajib diisi kecuali Nama Pendamping 2."); return; }
+            if(!isValid) { alert("Pendaftaran Gagal! Semua kolom wajib diisi kecuali Nama Pendamping 2."); return; }
             showLoading(true);
             const res = await callGAS("registerSchool", data);
             showLoading(false);
@@ -575,20 +601,20 @@
             showLoading(true);
             const res = await callGAS("addStudent", data);
             showLoading(false);
-            if(res && res.success) { form.reset(); updateCategories(); loadSchoolStudents(); alert("Berhasil! Kode Atlet: " + studentCode); }
+            if(res && res.success) { form.reset(); updateCategories(); loadSchoolStudents(); alert("Atlet berhasil terdaftar! Kode: " + studentCode); }
         }
 
         async function loadSchoolStudents() {
             const data = await callGAS("getSchoolStudents", { npsn: currentUser.npsn });
             if (data) {
-                cachedSchoolStudents = data; // Simpan di cache untuk filter cetak
+                cachedSchoolStudents = data;
                 const table = document.getElementById('studentListTable');
                 table.innerHTML = data.map(s => `
                     <tr class="border-b hover:bg-slate-50 transition-all">
                         <td class="py-2 px-2 font-mono text-xs text-blue-600 font-bold">${s.uniqueCode || 'ATL-' + s.nisn}</td>
-                        <td class="py-2 px-2 font-bold">${s.fullName}<br><span class="text-xs text-slate-400">NISN: ${s.nisn}</span></td>
-                        <td class="py-2 px-2 text-xs font-semibold">${s.cabor} (${s.gender})</td>
-                        <td class="py-2 px-2 text-[10px] italic text-slate-500">${s.categories}</td>
+                        <td class="py-2 px-2 font-bold uppercase text-xs">${s.fullName}<br><span class="text-[9px] text-slate-400 font-normal">NISN: ${s.nisn}</span></td>
+                        <td class="py-2 px-2 text-[10px] font-semibold uppercase">${s.cabor} (${s.gender})</td>
+                        <td class="py-2 px-2 text-[9px] italic text-slate-500 uppercase">${s.categories}</td>
                     </tr>
                 `).join('');
             }
@@ -602,12 +628,12 @@
                 document.getElementById('schoolListTable').innerHTML = schoolData.map(s => `
                     <tr class="border-b hover:bg-blue-50 transition-colors">
                         <td class="py-2 px-2 font-mono text-[10px] text-slate-400">SCH-${s[0]}</td>
-                        <td class="py-2 px-2 text-xs">${s[0]}</td>
-                        <td class="py-2 px-2 font-bold text-xs">${s[3]}</td>
+                        <td class="py-2 px-2 text-[10px]">${s[0]}</td>
+                        <td class="py-2 px-2 font-bold text-[10px] uppercase">${s[3]}</td>
                         <td class="py-2 px-2 text-[10px]">${s[2]}</td>
                         <td class="py-2 px-2 font-mono text-[10px] bg-slate-50">${s[1]}</td>
                         <td class="py-2 px-2 text-center">
-                            <button onclick="openEditSchool('${s[0]}')" class="text-blue-600 hover:text-blue-800 p-1 border rounded bg-white shadow-sm text-xs">
+                            <button onclick="openEditSchool('${s[0]}')" class="text-blue-600 hover:text-blue-800 p-1 border rounded bg-white shadow-sm text-[10px]">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
                         </td>
@@ -616,13 +642,14 @@
             }
             const studentData = await callGAS("getAllStudents");
             if (studentData) {
+                cachedAdminStudents = studentData; // Simpan ke cache
                 document.getElementById('adminStudentListTable').innerHTML = studentData.map(s => `
                     <tr class="border-b hover:bg-green-50">
-                        <td class="py-2 px-2 font-mono text-xs text-blue-700 font-bold">${s.uniqueCode || 'ATL-'+s.nisn}</td>
-                        <td class="py-2 px-2 font-bold text-xs">${s.fullName}</td>
-                        <td class="py-2 px-2 text-[10px]">${s.schoolName}</td>
-                        <td class="py-2 px-2 text-xs">${s.cabor}</td>
-                        <td class="py-2 px-2 text-xs">${s.gender}</td>
+                        <td class="py-2 px-2 font-mono text-[10px] text-blue-700 font-bold uppercase">${s.uniqueCode || 'ATL-'+s.nisn}</td>
+                        <td class="py-2 px-2 font-bold text-[10px] uppercase">${s.fullName}</td>
+                        <td class="py-2 px-2 text-[9px] uppercase">${s.schoolName}</td>
+                        <td class="py-2 px-2 text-[10px] uppercase">${s.cabor}</td>
+                        <td class="py-2 px-2 text-[10px] uppercase">${s.gender}</td>
                     </tr>
                 `).join('');
             }
@@ -630,6 +657,7 @@
         }
 
         function toggleEditSchoolModal(s) { document.getElementById('editSchoolModal').classList.toggle('hidden', !s); }
+        
         function openEditSchool(npsn) {
             const school = cachedSchools.find(s => s[0].toString() === npsn.toString());
             if(!school) return;
@@ -641,7 +669,7 @@
             f.email.value = school[2];
             f.contact.value = school[6];
             f.mentor1.value = school[4];
-            f.mentor2 = school[5] || "";
+            f.mentor2.value = school[5] || "";
             toggleEditSchoolModal(true);
         }
 
@@ -654,46 +682,55 @@
             else alert("Error: " + (res ? res.message : "Unknown"));
         }
 
-        /**
-         * FUNGSI PEMBANTU CETAK
-         */
+        // --- CORE PRINTING LOGIC ---
         function preparePrintView(title, sub, data, type) {
-            document.getElementById('printReportTitle').innerText = title.toUpperCase();
-            document.getElementById('printSubTitle').innerText = sub.toUpperCase();
-            document.getElementById('printDatePlaceholder').innerText = "Dicetak: " + new Date().toLocaleDateString('id-ID');
+            const titleEl = document.getElementById('printReportTitle');
+            const subTitleEl = document.getElementById('printSubTitle');
+            const tableHeader = document.getElementById('printTableHeader');
+            const tableBody = document.getElementById('printTableBody');
             
-            const h = document.getElementById('printTableHeader');
-            const b = document.getElementById('printTableBody');
+            // 1. Mencegah error 'undefined' saat memanggil toUpperCase()
+            titleEl.innerText = (title || "").toUpperCase();
+            subTitleEl.innerText = (sub || "").toUpperCase();
+            document.getElementById('printDatePlaceholder').innerText = "Tgl: " + new Date().toLocaleDateString('id-ID');
             
             if (type === "schools") {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left bg-slate-100">NO</th><th class="border border-slate-800 p-2 text-left bg-slate-100">ID SEKOLAH</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NPSN</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NAMA SEKOLAH</th><th class="border border-slate-800 p-2 text-left bg-slate-100">KONTAK</th></tr>`;
-                b.innerHTML = data.map((s, index) => `<tr><td class="border border-slate-800 p-2 text-center">${index + 1}</td><td class="border border-slate-800 p-2 text-xs">SCH-${s[0]}</td><td class="border border-slate-800 p-2 text-xs">${s[0]}</td><td class="border border-slate-800 p-2 text-xs font-bold">${s[3]}</td><td class="border border-slate-800 p-2 text-[10px]">${s[6]}</td></tr>`).join('');
+                tableHeader.innerHTML = `<tr class="bg-slate-100"><th class="border border-slate-800 p-2 text-center">NO</th><th class="border border-slate-800 p-2 text-left">ID SEKOLAH</th><th class="border border-slate-800 p-2 text-left">NPSN</th><th class="border border-slate-800 p-2 text-left">NAMA SEKOLAH</th><th class="border border-slate-800 p-2 text-left">KONTAK</th></tr>`;
+                tableBody.innerHTML = data.map((s, index) => `<tr><td class="border border-slate-800 p-2 text-center text-xs">${index + 1}</td><td class="border border-slate-800 p-2 text-xs font-mono font-bold">SCH-${s[0]}</td><td class="border border-slate-800 p-2 text-xs">${s[0]}</td><td class="border border-slate-800 p-2 text-xs font-bold uppercase">${s[3]}</td><td class="border border-slate-800 p-2 text-xs">${s[6]}</td></tr>`).join('');
             } else {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-center bg-slate-100">NO</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NAMA ATLET</th><th class="border border-slate-800 p-2 text-center bg-slate-100">JENIS KELAMIN</th><th class="border border-slate-800 p-2 text-left bg-slate-100">CABOR</th><th class="border border-slate-800 p-2 text-left bg-slate-100">KATEGORI LOMBA</th></tr>`;
-                b.innerHTML = data.map((s, index) => `
+                tableHeader.innerHTML = `<tr class="bg-slate-100"><th class="border border-slate-800 p-2 text-center">NO</th><th class="border border-slate-800 p-2 text-left">KODE ATLET</th><th class="border border-slate-800 p-2 text-left">NAMA ATLET</th><th class="border border-slate-800 p-2 text-center">L/P</th><th class="border border-slate-800 p-2 text-left">ASAL SEKOLAH</th><th class="border border-slate-800 p-2 text-left">CABOR / KATEGORI</th></tr>`;
+                tableBody.innerHTML = data.map((s, index) => `
                     <tr>
                         <td class="border border-slate-800 p-2 text-center text-xs">${index + 1}</td>
+                        <td class="border border-slate-800 p-2 text-xs font-mono font-bold">${s.uniqueCode || 'ATL-'+s.nisn}</td>
                         <td class="border border-slate-800 p-2 text-xs font-bold uppercase">${s.fullName}</td>
                         <td class="border border-slate-800 p-2 text-center text-xs uppercase">${s.gender === 'Putra' ? 'L' : 'P'}</td>
-                        <td class="border border-slate-800 p-2 text-xs uppercase">${s.cabor}</td>
-                        <td class="border border-slate-800 p-2 text-[10px] uppercase">${s.categories}</td>
+                        <td class="border border-slate-800 p-2 text-[10px] uppercase">${s.schoolName || sub}</td>
+                        <td class="border border-slate-800 p-2 text-[10px] uppercase">${s.cabor}<br><span class="italic text-[9px]">${s.categories}</span></td>
                     </tr>
                 `).join('');
             }
         }
 
-        /**
-         * CETAK DARI DASHBOARD SEKOLAH DENGAN FILTER
-         */
+        // --- DIPERBAIKI: FUNGSI PEMICU JENDELA PRINT ---
+        function triggerPrint() {
+            try {
+                // Eksekusi langsung TANPA setTimeout / Async. Ini kunci lolos dari popup blocker!
+                window.focus();
+                window.print();
+            } catch (e) {
+                console.error("Print Error:", e);
+                alert("Gagal memuat jendela cetak. Pastikan browser Anda mengizinkan fitur pop-up/print.");
+            }
+        }
+
         function printFromSchool() {
             if (!cachedSchoolStudents || cachedSchoolStudents.length === 0) {
-                alert("Tidak ada data untuk dicetak. Pastikan Anda sudah login dan data atlet muncul di tabel.");
+                alert("Data kosong, tidak ada yang bisa dicetak.");
                 return;
             }
-
             const caborFilter = document.getElementById('schoolPrintCabor').value;
             const genderFilter = document.getElementById('schoolPrintGender').value;
-
             let filteredData = [...cachedSchoolStudents];
             let titleString = "DAFTAR ATLET SELURUHNYA";
 
@@ -701,65 +738,53 @@
                 filteredData = filteredData.filter(s => s.cabor === caborFilter);
                 titleString = `DAFTAR ATLET CABANG ${caborFilter}`;
             }
-
             if (genderFilter !== "Semua") {
                 filteredData = filteredData.filter(s => s.gender === genderFilter);
                 titleString += ` - ${genderFilter}`;
             }
-
             if (filteredData.length === 0) {
-                alert("Data tidak ditemukan dengan filter tersebut.");
+                alert("Tidak ada atlet dengan filter tersebut.");
                 return;
             }
 
-            preparePrintView(titleString, currentUser.schoolName, filteredData, "school");
+            // 3. Fallback keamanan jika variabel currentUser terdeteksi tidak utuh
+            const schoolNameStr = (currentUser && currentUser.schoolName) ? currentUser.schoolName : "ASAL SEKOLAH";
             
-            // Jeda singkat agar tabel terisi sebelum dialog print terbuka
-            setTimeout(() => {
-                window.print();
-            }, 300);
+            preparePrintView(titleString, schoolNameStr, filteredData, "school");
+            triggerPrint();
         }
 
-        async function printAllSchools() {
-            showLoading(true);
-            const data = await callGAS("getAllSchools");
-            showLoading(false);
-            if(data) { 
-                preparePrintView("REKAP DATA SEKOLAH TERDAFTAR", "O2SN TINGKAT SEKOLAH DASAR", data, "schools"); 
-                setTimeout(() => window.print(), 300);
-            }
+        function printAllSchools() {
+            if(!cachedSchools || cachedSchools.length === 0) return alert("Data sekolah belum siap atau kosong. Tunggu loading selesai.");
+            preparePrintView("REKAP DATA SEKOLAH TERDAFTAR", appConfig.appName, cachedSchools, "schools"); 
+            triggerPrint();
         }
 
-        async function printAllStudents() {
-            showLoading(true);
-            const data = await callGAS("getAllStudents");
-            showLoading(false);
-            if(data) { 
-                preparePrintView("DAFTAR SELURUH ATLET PESERTA", "SEMUA CABANG OLAHRAGA", data, "all"); 
-                setTimeout(() => window.print(), 300);
-            }
+        function printAllStudents() {
+            if(!cachedAdminStudents || cachedAdminStudents.length === 0) return alert("Data atlet belum siap atau kosong. Tunggu loading selesai.");
+            preparePrintView("DAFTAR SELURUH ATLET PESERTA", "SEMUA CABANG OLAHRAGA", cachedAdminStudents, "all"); 
+            triggerPrint();
         }
 
-        async function printByCabor() {
+        function printByCabor() {
             const cabor = document.getElementById('printCaborFilter').value;
             const gender = document.getElementById('printGenderFilter').value;
-            showLoading(true);
-            const data = await callGAS("getAllStudents");
-            showLoading(false);
-            if(data) {
-                let filtered = data.filter(s => s.cabor === cabor);
-                if (gender !== "Semua") filtered = filtered.filter(s => s.gender === gender);
-                if(filtered.length === 0) return alert("Data tidak ditemukan.");
-                
-                const title = `DAFTAR ATLET CABANG ${cabor} ${gender !== "Semua" ? "- " + gender : ""}`;
-                preparePrintView(title, "O2SN TINGKAT SEKOLAH DASAR", filtered, "cabor");
-                setTimeout(() => window.print(), 300);
-            }
+            
+            if(!cachedAdminStudents || cachedAdminStudents.length === 0) return alert("Data atlet belum siap. Tunggu loading selesai.");
+            
+            let filtered = cachedAdminStudents.filter(s => s.cabor === cabor);
+            if (gender !== "Semua") filtered = filtered.filter(s => s.gender === gender);
+            if(filtered.length === 0) return alert("Data tidak ditemukan.");
+            
+            const title = `DAFTAR ATLET CABANG ${cabor} ${gender !== "Semua" ? "- " + gender : ""}`;
+            preparePrintView(title, appConfig.appName, filtered, "cabor");
+            triggerPrint();
         }
 
         async function saveAdminSettings() {
             const data = {
                 newName: document.getElementById('settingAppName').value,
+                adminPassword: document.getElementById('settingAdminPassword').value,
                 newLogo: document.getElementById('settingLogoUrl').value,
                 logoKkgUrl: document.getElementById('settingLogoKkgUrl').value,
                 newWebAppUrl: document.getElementById('settingWebAppUrl').value,
@@ -767,10 +792,10 @@
                 ttdAdminUrl: document.getElementById('settingTtdAdminUrl').value
             };
             showLoading(true);
-            await callGAS("updateSettings", data);
+            const res = await callGAS("updateSettings", data);
             await loadAppData();
             showLoading(false);
-            alert("Berhasil diperbarui!");
+            if(res && res.success) alert("Pengaturan berhasil disimpan!");
         }
     </script>
 </body>
