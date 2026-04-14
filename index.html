@@ -92,7 +92,7 @@
     <div id="app" class="max-w-6xl mx-auto px-4 py-8 no-print">
         <header class="flex flex-col items-center mb-10 text-center">
             <img id="appLogo" src="https://via.placeholder.com/100" alt="Logo" class="h-24 w-auto mb-4 object-contain">
-            <h1 id="appName" class="text-3xl font-extrabold text-slate-800 tracking-tight uppercase">O2SN TINGKAT SD KEC. PESANGGRAHAN</h1>
+            <h1 id="appName" class="text-3xl font-extrabold text-slate-800 tracking-tight uppercase">O2SN TINGKAT SEKOLAH DASAR</h1>
             <p class="text-slate-500 mt-2">Sistem Informasi Pendaftaran Atlet Peserta</p>
         </header>
 
@@ -148,8 +148,8 @@
                 <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
                     <h3 class="text-2xl font-bold mb-6 text-center text-slate-800">Login Sekolah</h3>
                     <div class="space-y-4">
-                        <input type="text" id="loginNpsn" placeholder="NPSN" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none">
-                        <input type="password" id="loginPass" placeholder="Password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none">
+                        <input type="text" id="loginNpsn" placeholder="NPSN" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="password" id="loginPass" placeholder="Password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
                         <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg transition-all">Masuk</button>
                         <button onclick="showView('home')" class="w-full text-slate-500 text-sm">Kembali</button>
                     </div>
@@ -161,15 +161,15 @@
                 <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
                     <h3 class="text-2xl font-bold mb-6 text-slate-800 border-b pb-4">Registrasi Sekolah Baru</h3>
                     <form id="regForm" class="grid md:grid-cols-2 gap-4">
-                        <input type="text" name="npsn" placeholder="NPSN (Wajib)" required class="px-4 py-2 border rounded-lg">
-                        <input type="password" name="password" placeholder="Password (Wajib)" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="schoolName" placeholder="Nama Sekolah (Wajib)" required class="col-span-full px-4 py-2 border rounded-lg">
-                        <input type="email" name="email" placeholder="Email Sekolah (Wajib)" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="contact" placeholder="Kontak WhatsApp (Wajib)" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="mentor1" placeholder="Nama Pendamping 1 (Wajib)" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="mentor2" placeholder="Nama Pendamping 2 (Opsional)" class="px-4 py-2 border rounded-lg">
-                        <input type="email" name="mentorEmail" placeholder="Email Pendamping (Wajib)" required class="col-span-full px-4 py-2 border rounded-lg">
-                        <button type="button" onclick="handleRegister()" class="col-span-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4 shadow-lg hover:bg-blue-700">Daftar Akun</button>
+                        <input type="text" name="npsn" placeholder="NPSN (Wajib)" required class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="password" name="password" placeholder="Password (Wajib)" required class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="text" name="schoolName" placeholder="Nama Sekolah (Wajib)" required class="col-span-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="email" name="email" placeholder="Email Sekolah (Wajib)" required class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="text" name="contact" placeholder="Kontak WhatsApp (Wajib)" required class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="text" name="mentor1" placeholder="Nama Pendamping 1 (Wajib)" required class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="text" name="mentor2" placeholder="Nama Pendamping 2 (Opsional)" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="email" name="mentorEmail" placeholder="Email Pendamping (Wajib)" required class="col-span-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <button type="button" onclick="handleRegister()" class="col-span-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4 shadow-lg hover:bg-blue-700 transition-all">Daftar Akun</button>
                         <button type="button" onclick="showView('home')" class="col-span-full text-slate-500">Batal</button>
                     </form>
                 </div>
@@ -182,22 +182,22 @@
                         <h3 class="text-2xl font-bold text-slate-800" id="dashSchoolName">Dashboard</h3>
                         <p class="text-slate-500 font-mono text-sm">ID Sekolah: <span id="dashSchoolId" class="text-blue-600 font-bold"></span> | NPSN: <span id="dashNpsn"></span></p>
                     </div>
-                    <button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold">Keluar</button>
+                    <button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold hover:bg-red-100 transition-all">Keluar</button>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="md:col-span-1 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 h-fit">
                         <h4 class="font-bold text-lg mb-4 text-blue-600 border-b pb-2">Tambah Atlet</h4>
                         <form id="studentForm" class="space-y-4">
-                            <input type="text" name="nisn" placeholder="NISN Siswa" required class="w-full px-3 py-2 border rounded-lg">
-                            <input type="date" name="birthDate" required class="w-full px-3 py-2 border rounded-lg">
-                            <input type="text" name="fullName" placeholder="Nama Lengkap" required class="w-full px-3 py-2 border rounded-lg">
-                            <select name="gender" required class="w-full px-3 py-2 border rounded-lg">
+                            <input type="text" name="nisn" placeholder="NISN Siswa" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            <input type="date" name="birthDate" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            <input type="text" name="fullName" placeholder="Nama Lengkap" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            <select name="gender" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                                 <option value="">Jenis Kelamin</option>
                                 <option value="Putra">Putra</option>
                                 <option value="Putri">Putri</option>
                             </select>
-                            <select id="caborSelect" name="cabor" required onchange="updateCategories()" class="w-full px-3 py-2 border rounded-lg">
+                            <select id="caborSelect" name="cabor" required onchange="updateCategories()" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                                 <option value="">Pilih Cabor</option>
                                 <option value="Renang">Renang</option>
                                 <option value="Atletik">Kids' Athletics</option>
@@ -209,20 +209,42 @@
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-2 text-center">Kategori Lomba</label>
                                 <div id="categoryList" class="space-y-1"></div>
                             </div>
-                            <button type="button" onclick="handleAddStudent()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-md hover:bg-blue-700">Simpan Atlet</button>
+                            <button type="button" onclick="handleAddStudent()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-md hover:bg-blue-700 transition-all">Simpan Atlet</button>
                         </form>
                     </div>
 
                     <div class="md:col-span-2 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 min-h-[400px]">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold text-lg">Daftar Atlet Sekolah</h4>
-                            <button onclick="window.print()" class="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg text-sm font-bold shadow-sm"><i class="fas fa-print mr-1"></i> Cetak / PDF</button>
+                        <div class="flex flex-col gap-4 mb-4">
+                            <h4 class="font-bold text-lg text-slate-800">Daftar Atlet Terdaftar</h4>
+                            <div class="flex flex-wrap gap-2 items-end bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase">Filter Cetak</label>
+                                    <div class="flex gap-2">
+                                        <select id="schoolPrintCabor" class="px-3 py-2 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500">
+                                            <option value="Semua">Semua Cabor</option>
+                                            <option value="Renang">Renang</option>
+                                            <option value="Atletik">Atletik</option>
+                                            <option value="Bulutangkis">Bulutangkis</option>
+                                            <option value="Pencak Silat">Silat</option>
+                                            <option value="Senam">Senam</option>
+                                        </select>
+                                        <select id="schoolPrintGender" class="px-3 py-2 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500">
+                                            <option value="Semua">Semua Gender</option>
+                                            <option value="Putra">Putra</option>
+                                            <option value="Putri">Putri</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button onclick="printFromSchool()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow hover:bg-blue-700 transition-all flex items-center">
+                                    <i class="fas fa-print mr-2"></i> Cetak PDF Terpilih
+                                </button>
+                            </div>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead>
                                     <tr class="text-slate-500 border-b text-left bg-slate-50">
-                                        <th class="py-3 px-2">Kode Atlet (Unik)</th>
+                                        <th class="py-3 px-2">Kode Atlet</th>
                                         <th class="py-3 px-2">Nama Siswa</th>
                                         <th class="py-3 px-2">Cabor</th>
                                         <th class="py-3 px-2">Kategori</th>
@@ -269,7 +291,7 @@
                                     <option value="Putri">Putri</option>
                                 </select>
                             </div>
-                            <button onclick="printByCabor()" class="w-full bg-green-600 text-white py-2 rounded-lg text-sm font-bold shadow hover:bg-green-700">Cetak Laporan</button>
+                            <button onclick="printByCabor()" class="w-full bg-green-600 text-white py-2 rounded-lg text-sm font-bold shadow hover:bg-green-700 transition-all">Cetak Laporan</button>
                         </div>
                     </div>
 
@@ -348,21 +370,16 @@
 
     <!-- PRINT PREVIEW -->
     <div id="printArea" class="print-only p-12 bg-white min-h-screen text-slate-900">
-        <!-- Flex Header for Two Logos -->
+        <!-- Header for Logos and App Title -->
         <div class="flex justify-between items-center border-b-4 border-double border-slate-800 pb-4 mb-6">
             <img id="printLogoLeft" src="" class="h-20 w-auto object-contain" alt="Logo O2SN">
             <div class="text-center flex-1 mx-4">
-                <h1 id="printReportTitle" class="text-xl font-black uppercase mb-1 line-clamp-2">LAPORAN REKAPITULASI O2SN</h1>
-                <h2 id="printSubTitle" class="text-lg font-bold uppercase mb-1">TINGKAT SEKOLAH DASAR</h2>
-                <p id="printAppBranding" class="text-xs font-medium italic"></p>
+                <!-- App Branding as Sub-header if exists -->
+                <p id="printAppBranding" class="text-[10px] font-medium italic mb-1 uppercase"></p>
+                <h1 id="printReportTitle" class="text-xl font-black uppercase mb-1 leading-tight">JUDUL LAPORAN</h1>
+                <h2 id="printSubTitle" class="text-lg font-bold uppercase">SUB JUDUL</h2>
             </div>
             <img id="printLogoRight" src="" class="h-20 w-auto object-contain" alt="Logo KKG">
-        </div>
-
-        <!-- Custom Header Info for School/NPSN -->
-        <div class="mb-4 text-sm">
-            <p id="printHeaderSchool" class="font-bold"></p>
-            <p id="printHeaderNpsn"></p>
         </div>
 
         <div id="printContentArea">
@@ -423,6 +440,7 @@
         let currentUser = null;
         let appConfig = {};
         let cachedSchools = [];
+        let cachedSchoolStudents = []; // Cache students for filtered printing
 
         window.onload = async () => {
             await loadAppData();
@@ -439,7 +457,6 @@
                 document.getElementById('appName').innerText = data.appName;
                 document.getElementById('appLogo').src = data.logoUrl;
                 
-                // Set Print Logos
                 document.getElementById('printLogoLeft').src = data.logoUrl;
                 const logoKkgEl = document.getElementById('printLogoRight');
                 if(data.logoKkgUrl) {
@@ -451,7 +468,6 @@
 
                 if (document.getElementById('printAppBranding')) document.getElementById('printAppBranding').innerText = data.appName;
                 
-                // Set values to admin inputs
                 document.getElementById('settingAppName').value = data.appName;
                 document.getElementById('settingLogoUrl').value = data.logoUrl;
                 document.getElementById('settingLogoKkgUrl').value = data.logoKkgUrl || '';
@@ -459,7 +475,6 @@
                 document.getElementById('settingTtdKetuaUrl').value = data.ttdKetuaUrl || '';
                 document.getElementById('settingTtdAdminUrl').value = data.ttdAdminUrl || '';
 
-                // Set signature images in print area
                 if(data.ttdKetuaUrl) {
                     const imgKetua = document.getElementById('printTtdKetua');
                     imgKetua.src = data.ttdKetuaUrl;
@@ -566,6 +581,7 @@
         async function loadSchoolStudents() {
             const data = await callGAS("getSchoolStudents", { npsn: currentUser.npsn });
             if (data) {
+                cachedSchoolStudents = data; // Store in cache for printing
                 const table = document.getElementById('studentListTable');
                 table.innerHTML = data.map(s => `
                     <tr class="border-b hover:bg-slate-50 transition-all">
@@ -575,10 +591,6 @@
                         <td class="py-2 px-2 text-[10px] italic text-slate-500">${s.categories}</td>
                     </tr>
                 `).join('');
-                preparePrintView("DAFTAR ATLET: " + currentUser.schoolName, "NPSN: " + currentUser.npsn, data, "school");
-                
-                document.getElementById('printHeaderSchool').innerText = "Nama Sekolah: " + currentUser.schoolName;
-                document.getElementById('printHeaderNpsn').innerText = "NPSN: " + currentUser.npsn;
             }
         }
 
@@ -642,48 +654,86 @@
             else alert("Error: " + (res ? res.message : "Unknown"));
         }
 
+        /**
+         * UPDATED PRINT HELPER
+         */
         function preparePrintView(title, sub, data, type) {
-            document.getElementById('printReportTitle').innerText = title;
-            document.getElementById('printSubTitle').innerText = sub;
+            // Set dynamic uppercase titles
+            document.getElementById('printReportTitle').innerText = title.toUpperCase();
+            document.getElementById('printSubTitle').innerText = sub.toUpperCase();
             document.getElementById('printDatePlaceholder').innerText = "Dicetak: " + new Date().toLocaleDateString('id-ID');
             
-            if(type !== "school") {
-                document.getElementById('printHeaderSchool').innerText = "";
-                document.getElementById('printHeaderNpsn').innerText = "";
-            }
+            // Per user request, remove School Name and NPSN lines from above the table
+            document.getElementById('printHeaderSchool').innerText = "";
+            document.getElementById('printHeaderNpsn').innerText = "";
 
             const h = document.getElementById('printTableHeader');
             const b = document.getElementById('printTableBody');
             
             if (type === "schools") {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left">No</th><th class="border border-slate-800 p-2 text-left">NPSN</th><th class="border border-slate-800 p-2 text-left">Sekolah</th><th class="border border-slate-800 p-2 text-left">Kontak</th></tr>`;
-                b.innerHTML = data.map((s, index) => `<tr><td class="border border-slate-800 p-2 text-[10px] text-center">${index + 1}</td><td class="border border-slate-800 p-2 text-xs">${s[0]}</td><td class="border border-slate-800 p-2 text-xs font-bold">${s[3]}</td><td class="border border-slate-800 p-2 text-[10px]">${s[6]}</td></tr>`).join('');
+                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left bg-slate-100">NO</th><th class="border border-slate-800 p-2 text-left bg-slate-100">ID SEKOLAH</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NPSN</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NAMA SEKOLAH</th><th class="border border-slate-800 p-2 text-left bg-slate-100">KONTAK</th></tr>`;
+                b.innerHTML = data.map((s, index) => `<tr><td class="border border-slate-800 p-2 text-center">${index + 1}</td><td class="border border-slate-800 p-2 text-xs">SCH-${s[0]}</td><td class="border border-slate-800 p-2 text-xs">${s[0]}</td><td class="border border-slate-800 p-2 text-xs font-bold">${s[3]}</td><td class="border border-slate-800 p-2 text-[10px]">${s[6]}</td></tr>`).join('');
             } else {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-center">No</th><th class="border border-slate-800 p-2 text-left">Nama Atlet</th><th class="border border-slate-800 p-2 text-center">L/P</th><th class="border border-slate-800 p-2 text-left">Cabor</th><th class="border border-slate-800 p-2 text-left">Kategori Lomba</th></tr>`;
+                // Main Athlete Print Format
+                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-center bg-slate-100">NO</th><th class="border border-slate-800 p-2 text-left bg-slate-100">NAMA ATLET</th><th class="border border-slate-800 p-2 text-center bg-slate-100">JENIS KELAMIN</th><th class="border border-slate-800 p-2 text-left bg-slate-100">CABOR</th><th class="border border-slate-800 p-2 text-left bg-slate-100">KATEGORI LOMBA</th></tr>`;
                 b.innerHTML = data.map((s, index) => `
                     <tr>
                         <td class="border border-slate-800 p-2 text-center text-xs">${index + 1}</td>
-                        <td class="border border-slate-800 p-2 text-xs font-bold">${s.fullName}</td>
-                        <td class="border border-slate-800 p-2 text-center text-xs">${s.gender === 'Putra' ? 'L' : 'P'}</td>
-                        <td class="border border-slate-800 p-2 text-xs">${s.cabor}</td>
-                        <td class="border border-slate-800 p-2 text-[10px]">${s.categories}</td>
+                        <td class="border border-slate-800 p-2 text-xs font-bold uppercase">${s.fullName}</td>
+                        <td class="border border-slate-800 p-2 text-center text-xs uppercase">${s.gender === 'Putra' ? 'Laki-laki (L)' : 'Perempuan (P)'}</td>
+                        <td class="border border-slate-800 p-2 text-xs uppercase">${s.cabor}</td>
+                        <td class="border border-slate-800 p-2 text-[10px] uppercase">${s.categories}</td>
                     </tr>
                 `).join('');
             }
+        }
+
+        /**
+         * NEW: Print logic for School Dashboard with filters
+         */
+        function printFromSchool() {
+            if (!cachedSchoolStudents || cachedSchoolStudents.length === 0) {
+                alert("Tidak ada data untuk dicetak.");
+                return;
+            }
+
+            const caborFilter = document.getElementById('schoolPrintCabor').value;
+            const genderFilter = document.getElementById('schoolPrintGender').value;
+
+            let filteredData = [...cachedSchoolStudents];
+            let titleString = "DAFTAR ATLET SELURUHNYA";
+
+            if (caborFilter !== "Semua") {
+                filteredData = filteredData.filter(s => s.cabor === caborFilter);
+                titleString = `DAFTAR ATLET CABANG ${caborFilter}`;
+            }
+
+            if (genderFilter !== "Semua") {
+                filteredData = filteredData.filter(s => s.gender === genderFilter);
+                titleString += ` - ${genderFilter}`;
+            }
+
+            if (filteredData.length === 0) {
+                alert("Data tidak ditemukan dengan filter tersebut.");
+                return;
+            }
+
+            preparePrintView(titleString, currentUser.schoolName, filteredData, "school");
+            window.print();
         }
 
         async function printAllSchools() {
             showLoading(true);
             const data = await callGAS("getAllSchools");
             showLoading(false);
-            if(data) { preparePrintView("REKAP DATA SEKOLAH", "O2SN TINGKAT SD", data, "schools"); window.print(); }
+            if(data) { preparePrintView("REKAP DATA SEKOLAH TERDAFTAR", "O2SN TINGKAT SEKOLAH DASAR", data, "schools"); window.print(); }
         }
 
         async function printAllStudents() {
             showLoading(true);
             const data = await callGAS("getAllStudents");
             showLoading(false);
-            if(data) { preparePrintView("REKAP DATA ATLET", "SELURUH CABANG", data, "all"); window.print(); }
+            if(data) { preparePrintView("DAFTAR SELURUH ATLET PESERTA", "SEMUA CABANG OLAHRAGA", data, "all"); window.print(); }
         }
 
         async function printByCabor() {
@@ -696,7 +746,9 @@
                 let filtered = data.filter(s => s.cabor === cabor);
                 if (gender !== "Semua") filtered = filtered.filter(s => s.gender === gender);
                 if(filtered.length === 0) return alert("Data tidak ditemukan.");
-                preparePrintView("LAPORAN ATLET", "CABOR: " + cabor.toUpperCase() + " (" + gender + ")", filtered, "cabor");
+                
+                const title = `DAFTAR ATLET CABANG ${cabor} ${gender !== "Semua" ? "- " + gender : ""}`;
+                preparePrintView(title, "O2SN TINGKAT SEKOLAH DASAR", filtered, "cabor");
                 window.print();
             }
         }
@@ -714,7 +766,7 @@
             await callGAS("updateSettings", data);
             await loadAppData();
             showLoading(false);
-            alert("Berhasil!");
+            alert("Berhasil diperbarui!");
         }
     </script>
 </body>
