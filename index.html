@@ -46,6 +46,48 @@
         </div>
     </div>
 
+    <!-- Edit School Modal (Admin Only) -->
+    <div id="editSchoolModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[110] flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-2xl w-full mx-4 border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-xl font-bold text-slate-800 mb-6">Edit Data Sekolah</h3>
+            <form id="editSchoolForm" class="grid md:grid-cols-2 gap-4">
+                <input type="hidden" name="oldNpsn">
+                <div class="col-span-full md:col-span-1">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">NPSN</label>
+                    <input type="text" name="npsn" class="w-full px-4 py-2 border rounded-lg bg-slate-50" readonly>
+                </div>
+                <div class="col-span-full md:col-span-1">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Password Baru</label>
+                    <input type="text" name="password" placeholder="Kosongkan jika tidak ganti" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="col-span-full">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Nama Sekolah</label>
+                    <input type="text" name="schoolName" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="col-span-full md:col-span-1">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Email Sekolah</label>
+                    <input type="email" name="email" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="col-span-full md:col-span-1">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Kontak</label>
+                    <input type="text" name="contact" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="col-span-full md:col-span-1">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Pendamping 1</label>
+                    <input type="text" name="mentor1" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="col-span-full md:col-span-1">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Pendamping 2</label>
+                    <input type="text" name="mentor2" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="flex gap-2 col-span-full mt-4">
+                    <button type="button" onclick="handleUpdateSchool()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">Simpan Perubahan</button>
+                    <button type="button" onclick="toggleEditSchoolModal(false)" class="px-6 py-3 text-slate-500 font-medium hover:text-slate-800 border rounded-xl">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="app" class="max-w-6xl mx-auto px-4 py-8 no-print">
         <header class="flex flex-col items-center mb-10 text-center">
             <img id="appLogo" src="https://via.placeholder.com/100" alt="Logo" class="h-24 w-auto mb-4 object-contain">
@@ -59,7 +101,7 @@
                 <div class="grid md:grid-cols-2 gap-8 items-center mb-12">
                     <div class="space-y-6">
                         <h2 class="text-4xl font-bold text-slate-900 leading-tight">Portal Registrasi O2SN SD</h2>
-                        <p class="text-lg text-slate-600">Pendaftaran resmi atlet tingkat Sekolah Dasar. Kelola data sekolah dan siswa secara digital.</p>
+                        <p class="text-lg text-slate-600">Pendaftaran resmi atlet tingkat Sekolah Dasar. Kelola data sekolah dan siswa secara digital di GitHub & Google Sheets.</p>
                         <div class="flex flex-wrap gap-4">
                             <button onclick="showView('login')" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all">Login Sekolah</button>
                             <button onclick="showView('register')" class="bg-white border-2 border-slate-200 hover:border-blue-600 text-slate-700 px-8 py-3 rounded-xl font-semibold transition-all">Daftar Akun Baru</button>
@@ -116,17 +158,18 @@
             <!-- View: Register -->
             <div id="view-register" class="hidden max-w-2xl mx-auto">
                 <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
-                    <h3 class="text-2xl font-bold mb-6 text-slate-800">Registrasi Sekolah Baru</h3>
+                    <h3 class="text-2xl font-bold mb-6 text-slate-800 border-b pb-4">Registrasi Sekolah Baru</h3>
+                    <p class="text-xs text-red-500 mb-4">* Semua kolom wajib diisi kecuali Nama Pendamping 2</p>
                     <form id="regForm" class="grid md:grid-cols-2 gap-4">
-                        <input type="text" name="npsn" placeholder="NPSN" required class="px-4 py-2 border rounded-lg">
-                        <input type="password" name="password" placeholder="Password" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="schoolName" placeholder="Nama Sekolah" required class="col-span-full px-4 py-2 border rounded-lg">
-                        <input type="email" name="email" placeholder="Email Sekolah" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="contact" placeholder="Kontak" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="mentor1" placeholder="Pendamping 1" required class="px-4 py-2 border rounded-lg">
-                        <input type="text" name="mentor2" placeholder="Pendamping 2" required class="px-4 py-2 border rounded-lg">
-                        <input type="email" name="mentorEmail" placeholder="Email Pendamping" required class="col-span-full px-4 py-2 border rounded-lg">
-                        <button type="button" onclick="handleRegister()" class="col-span-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4">Daftar Akun</button>
+                        <input type="text" name="npsn" placeholder="NPSN (Wajib)" required class="px-4 py-2 border rounded-lg">
+                        <input type="password" name="password" placeholder="Password (Wajib)" required class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="schoolName" placeholder="Nama Sekolah (Wajib)" required class="col-span-full px-4 py-2 border rounded-lg">
+                        <input type="email" name="email" placeholder="Email Sekolah (Wajib)" required class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="contact" placeholder="Kontak WhatsApp (Wajib)" required class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="mentor1" placeholder="Nama Pendamping 1 (Wajib)" required class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="mentor2" placeholder="Nama Pendamping 2 (Boleh Kosong)" class="px-4 py-2 border rounded-lg">
+                        <input type="email" name="mentorEmail" placeholder="Email Pendamping (Wajib)" required class="col-span-full px-4 py-2 border rounded-lg">
+                        <button type="button" onclick="handleRegister()" class="col-span-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4 shadow-lg hover:bg-blue-700 transition-all">Daftar Akun</button>
                         <button type="button" onclick="showView('home')" class="col-span-full text-slate-500">Batal</button>
                     </form>
                 </div>
@@ -137,7 +180,7 @@
                 <div class="flex justify-between items-center mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                     <div>
                         <h3 class="text-2xl font-bold text-slate-800" id="dashSchoolName">Dashboard</h3>
-                        <p class="text-slate-500">NPSN: <span id="dashNpsn"></span></p>
+                        <p class="text-slate-500 font-mono text-sm">ID Sekolah: <span id="dashSchoolId" class="text-blue-600"></span> | NPSN: <span id="dashNpsn"></span></p>
                     </div>
                     <button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold">Keluar</button>
                 </div>
@@ -166,7 +209,7 @@
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-2 text-center">Kategori Lomba</label>
                                 <div id="categoryList" class="space-y-1"></div>
                             </div>
-                            <button type="button" onclick="handleAddStudent()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Simpan Atlet</button>
+                            <button type="button" onclick="handleAddStudent()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-md hover:bg-blue-700">Simpan Atlet</button>
                         </form>
                     </div>
 
@@ -178,10 +221,11 @@
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead>
-                                    <tr class="text-slate-500 border-b">
-                                        <th class="text-left py-3 px-2">Nama Siswa</th>
-                                        <th class="text-left py-3 px-2">Cabor</th>
-                                        <th class="text-left py-3 px-2">Kategori</th>
+                                    <tr class="text-slate-500 border-b text-left bg-slate-50">
+                                        <th class="py-3 px-2">ID Atlet</th>
+                                        <th class="py-3 px-2">Nama Siswa</th>
+                                        <th class="py-3 px-2">Cabor</th>
+                                        <th class="py-3 px-2">Kategori</th>
                                     </tr>
                                 </thead>
                                 <tbody id="studentListTable"></tbody>
@@ -234,21 +278,23 @@
                             <input type="text" id="settingAppName" placeholder="Nama Aplikasi" class="w-full px-3 py-1 border rounded text-xs">
                             <input type="text" id="settingLogoUrl" placeholder="URL Logo" class="w-full px-3 py-1 border rounded text-xs">
                             <input type="text" id="settingWebAppUrl" placeholder="Web App URL" class="w-full px-3 py-1 border rounded text-xs">
-                            <button onclick="saveAdminSettings()" class="w-full bg-slate-100 text-slate-700 py-1 rounded text-xs font-bold">Simpan Pengaturan</button>
+                            <button onclick="saveAdminSettings()" class="w-full bg-slate-100 text-slate-700 py-1 rounded text-xs font-bold shadow-sm">Simpan Pengaturan</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-100">
-                    <h4 class="font-bold mb-4 text-slate-800">Sekolah Terdaftar</h4>
+                    <h4 class="font-bold mb-4 text-slate-800">Daftar Sekolah & Akun (Admin Edit)</h4>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="bg-slate-50 border-b">
                                 <tr>
+                                    <th class="py-3 px-2">ID</th>
                                     <th class="py-3 px-2">NPSN</th>
                                     <th class="py-3 px-2">Nama Sekolah</th>
-                                    <th class="py-3 px-2">Email</th>
-                                    <th class="py-3 px-2">Mentor</th>
+                                    <th class="py-3 px-2">Email Akun</th>
+                                    <th class="py-3 px-2">Password</th>
+                                    <th class="py-3 px-2">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="schoolListTable"></tbody>
@@ -309,6 +355,7 @@
 
         let currentUser = null;
         let appConfig = {};
+        let cachedSchools = []; // Menyimpan data sekolah sementara untuk keperluan edit
 
         window.onload = async () => {
             await loadAppData();
@@ -367,17 +414,35 @@
                 currentUser = res.schoolData;
                 document.getElementById('dashSchoolName').innerText = currentUser.schoolName;
                 document.getElementById('dashNpsn').innerText = currentUser.npsn;
+                document.getElementById('dashSchoolId').innerText = "SCH-" + currentUser.npsn;
                 showView('dashboard');
             } else alert(res ? res.message : "Error Login");
         }
 
         async function handleRegister() {
+            const form = document.getElementById('regForm');
+            const data = Object.fromEntries(new FormData(form));
+            
+            // Validasi: Wajib isi semua kecuali mentor2
+            const requiredFields = ['npsn', 'password', 'schoolName', 'email', 'contact', 'mentor1', 'mentorEmail'];
+            let isValid = true;
+            requiredFields.forEach(f => {
+                if(!data[f] || data[f].trim() === "") isValid = false;
+            });
+
+            if(!isValid) {
+                alert("ERROR: Pendaftaran Gagal! Semua kolom wajib diisi kecuali Nama Pendamping 2.");
+                return;
+            }
+
             showLoading(true);
-            const data = Object.fromEntries(new FormData(document.getElementById('regForm')));
             const res = await callGAS("registerSchool", data);
             showLoading(false);
-            if(res && res.success) { alert("Registrasi Berhasil!"); showView('login'); }
-            else alert(res ? res.message : "Error Registrasi");
+            if(res && res.success) { 
+                alert("Selamat! Registrasi Berhasil. Silakan login menggunakan NPSN dan Password."); 
+                form.reset();
+                showView('login'); 
+            } else alert(res ? res.message : "Terjadi kesalahan registrasi.");
         }
 
         function logout() { currentUser = null; showView('home'); }
@@ -408,10 +473,15 @@
             const checks = Array.from(form.querySelectorAll('input[name="categories"]:checked'));
             data.categories = checks.map(c => c.value);
             data.npsn = currentUser.npsn;
+            
+            // Generate unique student code based on NISN and Cabor
+            const studentCode = "ATL-" + data.nisn + "-" + data.cabor.substring(0,3).toUpperCase();
+            data.uniqueCode = studentCode;
+
             showLoading(true);
             const res = await callGAS("addStudent", data);
             showLoading(false);
-            if(res && res.success) { form.reset(); updateCategories(); loadSchoolStudents(); alert("Atlet disimpan!"); }
+            if(res && res.success) { form.reset(); updateCategories(); loadSchoolStudents(); alert("Atlet berhasil terdaftar dengan Kode: " + studentCode); }
         }
 
         async function loadSchoolStudents() {
@@ -419,7 +489,12 @@
             if (data) {
                 const table = document.getElementById('studentListTable');
                 table.innerHTML = data.map(s => `
-                    <tr class="border-b"><td class="py-2 px-2 font-bold">${s.fullName}<br><span class="text-xs text-slate-400">${s.nisn}</span></td><td class="py-2 px-2 text-xs">${s.cabor} (${s.gender})</td><td class="py-2 px-2 text-[10px] italic">${s.categories}</td></tr>
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2 px-2 font-mono text-xs text-blue-600">${s.uniqueCode || 'ATL-' + s.nisn}</td>
+                        <td class="py-2 px-2 font-bold">${s.fullName}<br><span class="text-xs text-slate-400">NISN: ${s.nisn}</span></td>
+                        <td class="py-2 px-2 text-xs">${s.cabor} (${s.gender})</td>
+                        <td class="py-2 px-2 text-[10px] italic text-slate-500">${s.categories}</td>
+                    </tr>
                 `).join('');
                 preparePrintView("DAFTAR ATLET: " + currentUser.schoolName, "NPSN: " + currentUser.npsn, data, "school");
             }
@@ -428,9 +503,58 @@
         async function loadAdminData() {
             const data = await callGAS("getAllSchools");
             if (data) {
-                document.getElementById('schoolListTable').innerHTML = data.map(s => `
-                    <tr class="border-b"><td class="py-2 px-2">${s[0]}</td><td class="py-2 px-2 font-bold text-xs">${s[3]}</td><td class="py-2 px-2 text-[10px]">${s[2]}</td><td class="py-2 px-2 text-[10px]">${s[4]}</td></tr>
+                cachedSchools = data;
+                document.getElementById('schoolListTable').innerHTML = data.map((s, idx) => `
+                    <tr class="border-b hover:bg-blue-50 transition-all">
+                        <td class="py-2 px-2 font-mono text-xs text-slate-400">SCH-${s[0]}</td>
+                        <td class="py-2 px-2 font-bold">${s[0]}</td>
+                        <td class="py-2 px-2 text-xs font-semibold">${s[3]}</td>
+                        <td class="py-2 px-2 text-[10px]">${s[2]}</td>
+                        <td class="py-2 px-2 font-mono text-xs bg-slate-100">${s[1]}</td>
+                        <td class="py-2 px-2">
+                            <button onclick="openEditSchool('${s[0]}')" class="text-blue-600 hover:text-blue-800 p-1 border rounded shadow-sm bg-white">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                        </td>
+                    </tr>
                 `).join('');
+            }
+        }
+
+        // Admin Edit Logic
+        function toggleEditSchoolModal(s) { document.getElementById('editSchoolModal').classList.toggle('hidden', !s); }
+        
+        function openEditSchool(npsn) {
+            const school = cachedSchools.find(s => s[0].toString() === npsn.toString());
+            if(!school) return;
+
+            const form = document.getElementById('editSchoolForm');
+            form.oldNpsn.value = school[0];
+            form.npsn.value = school[0];
+            form.password.value = ""; // Don't show current password for security, let them overwrite
+            form.schoolName.value = school[3];
+            form.email.value = school[2];
+            form.contact.value = school[6];
+            form.mentor1.value = school[4];
+            form.mentor2.value = school[5] || "";
+
+            toggleEditSchoolModal(true);
+        }
+
+        async function handleUpdateSchool() {
+            const form = document.getElementById('editSchoolForm');
+            const data = Object.fromEntries(new FormData(form));
+            
+            showLoading(true);
+            const res = await callGAS("updateSchoolData", data); // Make sure backend supports updateSchoolData
+            showLoading(false);
+            
+            if(res && res.success) {
+                alert("Data sekolah berhasil diperbarui!");
+                toggleEditSchoolModal(false);
+                loadAdminData();
+            } else {
+                alert("Gagal memperbarui data: " + (res ? res.message : "Timeout"));
             }
         }
 
@@ -441,11 +565,11 @@
             const h = document.getElementById('printTableHeader');
             const b = document.getElementById('printTableBody');
             if (type === "schools") {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2">NPSN</th><th class="border border-slate-800 p-2">Sekolah</th><th class="border border-slate-800 p-2">Kontak</th></tr>`;
-                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2">${s[0]}</td><td class="border border-slate-800 p-2">${s[3]}</td><td class="border border-slate-800 p-2">${s[6]}</td></tr>`).join('');
+                h.innerHTML = `<tr><th class="border border-slate-800 p-2">ID</th><th class="border border-slate-800 p-2">NPSN</th><th class="border border-slate-800 p-2">Sekolah</th><th class="border border-slate-800 p-2">Kontak</th></tr>`;
+                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2 text-xs">SCH-${s[0]}</td><td class="border border-slate-800 p-2">${s[0]}</td><td class="border border-slate-800 p-2">${s[3]}</td><td class="border border-slate-800 p-2">${s[6]}</td></tr>`).join('');
             } else {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2">NISN</th><th class="border border-slate-800 p-2">Nama</th><th class="border border-slate-800 p-2">Cabor</th></tr>`;
-                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2">${s.nisn}</td><td class="border border-slate-800 p-2">${s.fullName}</td><td class="border border-slate-800 p-2">${s.cabor}</td></tr>`).join('');
+                h.innerHTML = `<tr><th class="border border-slate-800 p-2">Kode Atlet</th><th class="border border-slate-800 p-2">Nama</th><th class="border border-slate-800 p-2">L/P</th><th class="border border-slate-800 p-2">Cabor</th></tr>`;
+                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2 font-mono text-xs">${s.uniqueCode || 'ATL-'+s.nisn}</td><td class="border border-slate-800 p-2">${s.fullName}</td><td class="border border-slate-800 p-2 text-center">${s.gender === 'Putra' ? 'L' : 'P'}</td><td class="border border-slate-800 p-2">${s.cabor}</td></tr>`).join('');
             }
         }
 
