@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi O2SN SD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; margin: 0; padding: 0; }
+        }
+        .print-only { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center hidden">
+        <div class="bg-white p-5 rounded-lg flex flex-col items-center shadow-2xl">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-2"></div>
+            <p class="text-sm font-medium text-gray-700">Memproses...</p>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[110] flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full mx-4 border border-slate-100">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-user-shield text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800">Admin Login</h3>
+                <p class="text-sm text-slate-500">Masukkan password administrator</p>
+            </div>
+            <div class="space-y-4">
+                <input type="password" id="adminInputPass" placeholder="Password" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none">
+                <div class="flex gap-2">
+                    <button onclick="verifyAdmin()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">Masuk</button>
+                    <button onclick="toggleAdminModal(false)" class="px-4 py-3 text-slate-500 font-medium hover:text-slate-800">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Content -->
+    <div id="app" class="max-w-6xl mx-auto px-4 py-8 no-print">
+        
+        <header class="flex flex-col items-center mb-10 text-center">
+            <img id="appLogo" src="https://via.placeholder.com/100" alt="Logo" class="h-24 w-auto mb-4 object-contain">
+            <h1 id="appName" class="text-3xl font-extrabold text-slate-800 tracking-tight uppercase">O2SN TINGKAT SEKOLAH DASAR</h1>
+            <p class="text-slate-500 mt-2">Sistem Informasi Pendaftaran Atlet Peserta</p>
+        </header>
+
+        <main id="mainContent">
+            <!-- View: Home -->
+            <div id="view-home" class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-4xl font-bold text-slate-900 leading-tight">Portal Registrasi O2SN SD</h2>
+                    <p class="text-lg text-slate-600">Pendaftaran resmi atlet tingkat Sekolah Dasar. Kelola data sekolah dan siswa dalam satu platform digital.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="showView('login')" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all">Login Sekolah</button>
+                        <button onclick="showView('register')" class="bg-white border-2 border-slate-200 hover:border-blue-600 text-slate-700 px-8 py-3 rounded-xl font-semibold transition-all">Daftar Akun Baru</button>
+                    </div>
+                </div>
+                <!-- Visual Cabor Cards with Stats -->
+                <div class="bg-blue-50 p-8 rounded-3xl border border-blue-100 hidden md:block">
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100 hover:border-blue-400 transition-all cursor-default">
+                            <i class="fas fa-swimmer text-blue-500 text-3xl mb-2"></i>
+                            <p class="font-bold text-sm">Renang</p>
+                            <p id="stats-Renang" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100 hover:border-orange-400 transition-all cursor-default">
+                            <i class="fas fa-running text-orange-500 text-3xl mb-2"></i>
+                            <p class="font-bold text-sm">Atletik</p>
+                            <p id="stats-Atletik" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100 hover:border-yellow-400 transition-all cursor-default">
+                            <i class="fas fa-medal text-yellow-500 text-3xl mb-2"></i>
+                            <p class="font-bold text-sm">Senam</p>
+                            <p id="stats-Senam" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100 hover:border-red-400 transition-all cursor-default">
+                            <i class="fas fa-fist-raised text-red-500 text-3xl mb-2"></i>
+                            <p class="font-bold text-sm">Silat</p>
+                            <p id="stats-Pencak Silat" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100 hover:border-green-400 transition-all cursor-default">
+                            <i class="fas fa-table-tennis text-green-500 text-3xl mb-2"></i>
+                            <p class="font-bold text-sm">Bulutangkis</p>
+                            <p id="stats-Bulutangkis" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-full mt-10 text-center">
+                    <button onclick="toggleAdminModal(true)" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fas fa-lock mr-1"></i> Admin Login</button>
+                </div>
+            </div>
+
+            <!-- View: Login -->
+            <div id="view-login" class="hidden max-w-md mx-auto">
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-slate-800">Login Sekolah</h3>
+                    <div class="space-y-4">
+                        <input type="text" id="loginNpsn" placeholder="NPSN" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="password" id="loginPass" placeholder="Password" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">Masuk</button>
+                        <button onclick="showView('home')" class="w-full text-slate-500 text-sm">Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View: Register -->
+            <div id="view-register" class="hidden max-w-2xl mx-auto">
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+                    <h3 class="text-2xl font-bold mb-6 text-slate-800">Registrasi Sekolah Baru</h3>
+                    <form id="regForm" class="grid md:grid-cols-2 gap-4">
+                        <input type="text" name="npsn" placeholder="NPSN" required class="px-4 py-2 border rounded-lg">
+                        <input type="password" name="password" placeholder="Password" required class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="schoolName" placeholder="Nama Sekolah" required class="col-span-full px-4 py-2 border rounded-lg">
+                        <input type="email" name="email" placeholder="Email Sekolah" required class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="contact" placeholder="Kontak Pendamping" required class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="mentor1" placeholder="Pendamping 1" required class="px-4 py-2 border rounded-lg">
+                        <input type="text" name="mentor2" placeholder="Pendamping 2" required class="px-4 py-2 border rounded-lg">
+                        <input type="email" name="mentorEmail" placeholder="Email Pendamping" required class="col-span-full px-4 py-2 border rounded-lg">
+                        <button type="button" onclick="handleRegister()" class="col-span-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4">Daftar Akun</button>
+                        <button type="button" onclick="showView('home')" class="col-span-full text-slate-500">Batal</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- View: Dashboard Sekolah -->
+            <div id="view-dashboard" class="hidden">
+                <div class="flex justify-between items-center mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800" id="dashSchoolName">Dashboard</h3>
+                        <p class="text-slate-500">NPSN: <span id="dashNpsn"></span></p>
+                    </div>
+                    <button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold">Keluar</button>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="md:col-span-1 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 h-fit">
+                        <h4 class="font-bold text-lg mb-4 text-blue-600 border-b pb-2">Tambah Atlet</h4>
+                        <form id="studentForm" class="space-y-4">
+                            <input type="text" name="nisn" placeholder="NISN Siswa" required class="w-full px-3 py-2 border rounded-lg">
+                            <input type="date" name="birthDate" required class="w-full px-3 py-2 border rounded-lg">
+                            <input type="text" name="fullName" placeholder="Nama Lengkap" required class="w-full px-3 py-2 border rounded-lg">
+                            <select name="gender" required class="w-full px-3 py-2 border rounded-lg">
+                                <option value="">Jenis Kelamin</option>
+                                <option value="Putra">Putra</option>
+                                <option value="Putri">Putri</option>
+                            </select>
+                            <select id="caborSelect" name="cabor" required onchange="updateCategories()" class="w-full px-3 py-2 border rounded-lg">
+                                <option value="">Pilih Cabor</option>
+                                <option value="Renang">Renang</option>
+                                <option value="Atletik">Kids' Athletics</option>
+                                <option value="Bulutangkis">Bulutangkis</option>
+                                <option value="Pencak Silat">Pencak Silat</option>
+                                <option value="Senam">Senam</option>
+                            </select>
+                            <div id="categoryContainer" class="p-3 bg-slate-50 rounded-xl hidden border border-slate-200">
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Kategori Lomba</label>
+                                <div id="categoryList" class="space-y-1"></div>
+                            </div>
+                            <button type="button" onclick="handleAddStudent()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Simpan Atlet</button>
+                        </form>
+                    </div>
+
+                    <div class="md:col-span-2 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 min-h-[400px]">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold text-lg">Daftar Atlet Sekolah</h4>
+                            <button onclick="window.print()" class="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg text-sm font-bold"><i class="fas fa-print mr-1"></i> Cetak / PDF</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="text-slate-500 border-b">
+                                        <th class="text-left py-3 px-2">Nama Siswa</th>
+                                        <th class="text-left py-3 px-2">Cabor</th>
+                                        <th class="text-left py-3 px-2">Kategori</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentListTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View: Admin View -->
+            <div id="view-admin" class="hidden space-y-8">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-bold text-slate-800">Panel Administrator</h3>
+                    <button onclick="showView('home')" class="text-slate-500 font-bold">Kembali</button>
+                </div>
+
+                <!-- Laporan & Print Tools -->
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-blue-600">
+                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-file-invoice mr-2"></i> Laporan Rekapitulasi</h4>
+                        <div class="space-y-3">
+                            <button onclick="printAllSchools()" class="w-full bg-slate-800 text-white py-2 rounded-lg text-sm font-bold hover:bg-black transition-all">
+                                <i class="fas fa-school mr-2"></i> Cetak Daftar Sekolah
+                            </button>
+                            <button onclick="printAllStudents()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition-all">
+                                <i class="fas fa-users mr-2"></i> Cetak Seluruh Atlet
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-green-600">
+                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-filter mr-2"></i> Cetak per Cabang</h4>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-2 gap-2">
+                                <select id="printCaborFilter" class="w-full px-3 py-2 border rounded-lg text-xs">
+                                    <option value="Renang">Renang</option>
+                                    <option value="Atletik">Kids' Athletics</option>
+                                    <option value="Bulutangkis">Bulutangkis</option>
+                                    <option value="Pencak Silat">Pencak Silat</option>
+                                    <option value="Senam">Senam</option>
+                                </select>
+                                <select id="printGenderFilter" class="w-full px-3 py-2 border rounded-lg text-xs">
+                                    <option value="Semua">Semua Gender</option>
+                                    <option value="Putra">Putra Saja</option>
+                                    <option value="Putri">Putri Saja</option>
+                                </select>
+                            </div>
+                            <button onclick="printByCabor()" class="w-full bg-green-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-green-700 transition-all">
+                                <i class="fas fa-print mr-2"></i> Cetak Laporan Terfilter
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-slate-400">
+                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-cogs mr-2"></i> Pengaturan Web</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase">Nama Aplikasi</label>
+                                <input type="text" id="settingAppName" placeholder="Nama Aplikasi" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase">URL Logo (Image Link)</label>
+                                <input type="text" id="settingLogoUrl" placeholder="URL Logo" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase">Web App URL (Link Deploy)</label>
+                                <input type="text" id="settingWebAppUrl" placeholder="https://script.google.com/..." class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <button onclick="saveAdminSettings()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-blue-700 transition-all shadow-md">Simpan Perubahan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- School List Table -->
+                <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-100">
+                    <h4 class="font-bold mb-4 text-slate-800">Daftar Sekolah Terdaftar</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 border-b">
+                                <tr>
+                                    <th class="py-3 px-2">NPSN</th>
+                                    <th class="py-3 px-2">Nama Sekolah</th>
+                                    <th class="py-3 px-2">Email</th>
+                                    <th class="py-3 px-2">Mentor</th>
+                                    <th class="py-3 px-2">Kontak</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schoolListTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- PRINT PREVIEW CONTAINER -->
+    <div id="printArea" class="print-only p-12 bg-white min-h-screen text-slate-900">
+        <div class="text-center border-b-4 border-double border-slate-800 pb-6 mb-8">
+            <h1 id="printReportTitle" class="text-2xl font-black uppercase mb-1">LAPORAN REKAPITULASI PESERTA O2SN</h1>
+            <h2 id="printSubTitle" class="text-xl font-bold uppercase mb-2">TINGKAT SEKOLAH DASAR</h2>
+            <p id="printAppBranding" class="text-sm font-medium italic"></p>
+        </div>
+        
+        <div id="printContentArea">
+            <table class="w-full border-collapse border-2 border-slate-800">
+                <thead id="printTableHeader"></thead>
+                <tbody id="printTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="mt-20 grid grid-cols-2 text-center text-sm">
+            <div>
+                <p>Mengetahui,</p>
+                <p class="font-bold">Ketua Panitia O2SN</p>
+                <div class="h-24"></div>
+                <p class="font-bold underline">( ........................................ )</p>
+            </div>
+            <div>
+                <p id="printDatePlaceholder"></p>
+                <p class="font-bold">Administrator Sistem</p>
+                <div class="h-24"></div>
+                <p class="font-bold underline">( ........................................ )</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * =========================================================================
+         * TANDA MANUAL: TEMPEL URL WEB APP ANDA DI BAWAH INI
+         * Ganti teks "TEMPEL_URL_WEB_APP_ANDA_DISINI" dengan link hasil deploy GAS Anda.
+         * =========================================================================
+         */
+        const MANUAL_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyckGrwotriQte2ufeWRXncLkOXq6hcMuRFBPr16hFlmYwBQspWriT9t0wnKnNBJAH_/exec";
+        /** ========================================================================= */
+
+        // --- MOCK API FOR LOCAL PREVIEW ---
+        if (typeof google === 'undefined') {
+            window.google = {
+                script: {
+                    run: {
+                        withSuccessHandler: function(cb) { this._cb = cb; return this; },
+                        getAppData: function() { this._cb({ appName: 'O2SN KECAMATAN PESANGGRAHAN', logoUrl: 'https://via.placeholder.com/150', webAppUrl: '' }); },
+                        getCaborStats: function() { this._cb({ "Renang": 5, "Atletik": 8, "Bulutangkis": 12, "Pencak Silat": 4, "Senam": 3 }); },
+                        registerSchool: function() { this._cb({ success: true }); },
+                        loginUser: function(n, p) { this._cb({ success: true, schoolData: { npsn: n, schoolName: "SD NEGERI DEMO" } }); },
+                        addStudent: function() { this._cb({ success: true }); },
+                        getSchoolStudents: function() { this._cb([{ nisn: "123", fullName: "Budi", gender: "Putra", cabor: "Renang", categories: "Gaya Bebas" }]); },
+                        getAllSchools: function() { this._cb([["1001", "pass", "sd@demo.com", "SD Negeri Demo 01", "Andi", "Ani", "08123", "mentor@demo.com"]]); },
+                        getAllStudents: function() { 
+                            this._cb([
+                                { schoolName: "SD Demo 01", nisn: "123", fullName: "Budi", gender: "Putra", cabor: "Renang", categories: "Gaya Bebas" },
+                                { schoolName: "SD Demo 01", nisn: "124", fullName: "Siti", gender: "Putri", cabor: "Renang", categories: "Gaya Bebas" },
+                                { schoolName: "SD Demo 02", nisn: "456", fullName: "Anton", gender: "Putra", cabor: "Atletik", categories: "Kanga Escape" }
+                            ]); 
+                        },
+                        updateSettings: function() { this._cb(true); }
+                    }
+                }
+            };
+        }
+
+        let currentUser = null;
+        let appConfig = {};
+
+        window.onload = () => {
+            loadAppData();
+            loadCaborStats();
+        };
+
+        function showLoading(s) { document.getElementById('loadingOverlay').classList.toggle('hidden', !s); }
+
+        function loadAppData() {
+            showLoading(true);
+            google.script.run.withSuccessHandler(data => {
+                appConfig = data;
+                
+                // Gunakan URL Manual jika sudah diisi, jika tidak gunakan dari database
+                const effectiveWebAppUrl = (MANUAL_WEB_APP_URL !== "TEMPEL_URL_WEB_APP_ANDA_DISINI") 
+                    ? MANUAL_WEB_APP_URL 
+                    : (data.webAppUrl || '');
+
+                document.getElementById('appName').innerText = data.appName;
+                document.getElementById('appLogo').src = data.logoUrl;
+                if (document.getElementById('printAppBranding')) {
+                    document.getElementById('printAppBranding').innerText = data.appName;
+                }
+                document.getElementById('settingAppName').value = data.appName;
+                document.getElementById('settingLogoUrl').value = data.logoUrl;
+                document.getElementById('settingWebAppUrl').value = effectiveWebAppUrl;
+                showLoading(false);
+            }).getAppData();
+        }
+
+        function loadCaborStats() {
+            google.script.run.withSuccessHandler(stats => {
+                for (const cabor in stats) {
+                    const el = document.getElementById('stats-' + cabor);
+                    if (el) el.innerText = stats[cabor] + " Atlet";
+                }
+            }).getCaborStats();
+        }
+
+        function showView(viewId) {
+            const views = ['home', 'login', 'register', 'dashboard', 'admin'];
+            views.forEach(v => document.getElementById('view-' + v).classList.add('hidden'));
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+            if(viewId === 'dashboard') loadSchoolStudents();
+            if(viewId === 'admin') loadAdminData();
+            if(viewId === 'home') loadCaborStats();
+        }
+
+        function toggleAdminModal(s) { document.getElementById('adminLoginModal').classList.toggle('hidden', !s); }
+        function verifyAdmin() {
+            const p = document.getElementById('adminInputPass').value;
+            if(p === "admin") { toggleAdminModal(false); showView('admin'); }
+            else alert("Password Salah!");
+        }
+
+        function handleLogin() {
+            showLoading(true);
+            const n = document.getElementById('loginNpsn').value;
+            const p = document.getElementById('loginPass').value;
+            google.script.run.withSuccessHandler(res => {
+                showLoading(false);
+                if(res.success) { 
+                    currentUser = res.schoolData;
+                    document.getElementById('dashSchoolName').innerText = currentUser.schoolName;
+                    document.getElementById('dashNpsn').innerText = currentUser.npsn;
+                    showView('dashboard');
+                } else alert(res.message);
+            }).loginUser(n, p);
+        }
+
+        function handleRegister() {
+            showLoading(true);
+            const data = Object.fromEntries(new FormData(document.getElementById('regForm')));
+            google.script.run.withSuccessHandler(res => {
+                showLoading(false);
+                if(res.success) { alert("Registrasi Berhasil!"); showView('login'); }
+                else alert(res.message);
+            }).registerSchool(data);
+        }
+
+        function logout() { currentUser = null; showView('home'); }
+
+        function updateCategories() {
+            const cabor = document.getElementById('caborSelect').value;
+            const container = document.getElementById('categoryContainer');
+            const list = document.getElementById('categoryList');
+            list.innerHTML = "";
+            if(!cabor) return container.classList.add('hidden');
+            container.classList.remove('hidden');
+            let items = [];
+            if(cabor === 'Renang') items = ['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-kupu'];
+            else if(cabor === 'Atletik') items = ['Kanga Escape', 'Formula 1'];
+            else if(cabor === 'Bulutangkis') items = ['Tunggal'];
+            else if(cabor === 'Pencak Silat') items = ['Jurus Tunggal (Wajib)', 'Tanding Kelas H (40-42 Kg)'];
+            else if(cabor === 'Senam') items = ['Perorangan Serba Bisa'];
+
+            items.forEach(item => {
+                const isSilatWajib = item.includes('(Wajib)');
+                list.innerHTML += `<label class="flex items-center gap-2 text-xs"><input type="checkbox" name="categories" value="${item}" ${isSilatWajib ? 'checked disabled' : ''}> ${item}</label>`;
+            });
+        }
+
+        function handleAddStudent() {
+            const form = document.getElementById('studentForm');
+            const data = Object.fromEntries(new FormData(form));
+            const checks = Array.from(form.querySelectorAll('input[name="categories"]:checked'));
+            data.categories = checks.map(c => c.value);
+            data.npsn = currentUser.npsn;
+            showLoading(true);
+            google.script.run.withSuccessHandler(() => {
+                showLoading(false); form.reset(); updateCategories(); loadSchoolStudents();
+            }).addStudent(data);
+        }
+
+        function loadSchoolStudents() {
+            google.script.run.withSuccessHandler(data => {
+                const table = document.getElementById('studentListTable');
+                table.innerHTML = data.map(s => `
+                    <tr class="border-b">
+                        <td class="py-2 px-2 font-bold">${s.fullName}<br><span class="text-xs font-normal text-slate-400">${s.nisn}</span></td>
+                        <td class="py-2 px-2">${s.cabor} (${s.gender})</td>
+                        <td class="py-2 px-2 text-xs italic">${s.categories}</td>
+                    </tr>
+                `).join('');
+                preparePrintView("DAFTAR ATLET: " + currentUser.schoolName, "NPSN: " + currentUser.npsn, data, "school");
+            }).getSchoolStudents(currentUser.npsn);
+        }
+
+        function loadAdminData() {
+            google.script.run.withSuccessHandler(data => {
+                document.getElementById('schoolListTable').innerHTML = data.map(s => `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="py-2 px-2">${s[0]}</td>
+                        <td class="py-2 px-2 font-bold">${s[3]}</td>
+                        <td class="py-2 px-2 text-xs">${s[2]}</td>
+                        <td class="py-2 px-2 text-xs">${s[4]}</td>
+                        <td class="py-2 px-2 text-xs">${s[6]}</td>
+                    </tr>
+                `).join('');
+            }).getAllSchools();
+        }
+
+        function preparePrintView(title, sub, data, type) {
+            document.getElementById('printReportTitle').innerText = title;
+            document.getElementById('printSubTitle').innerText = sub;
+            if (document.getElementById('printAppBranding')) {
+                document.getElementById('printAppBranding').innerText = appConfig.appName;
+            }
+            document.getElementById('printDatePlaceholder').innerText = "Dicetak pada: " + new Date().toLocaleDateString('id-ID');
+
+            const header = document.getElementById('printTableHeader');
+            const body = document.getElementById('printTableBody');
+
+            if (type === "schools") {
+                header.innerHTML = `<tr class="bg-slate-100"><th class="border border-slate-800 p-2">No</th><th class="border border-slate-800 p-2">NPSN</th><th class="border border-slate-800 p-2">Nama Sekolah</th><th class="border border-slate-800 p-2">Mentor</th><th class="border border-slate-800 p-2">Kontak</th></tr>`;
+                body.innerHTML = data.map((s, i) => `<tr><td class="border border-slate-800 p-2 text-center">${i+1}</td><td class="border border-slate-800 p-2">${s[0]}</td><td class="border border-slate-800 p-2 font-bold">${s[3]}</td><td class="border border-slate-800 p-2">${s[4]}</td><td class="border border-slate-800 p-2">${s[6]}</td></tr>`).join('');
+            } else {
+                header.innerHTML = `<tr class="bg-slate-100"><th class="border border-slate-800 p-2">No</th><th class="border border-slate-800 p-2">Sekolah</th><th class="border border-slate-800 p-2">NISN</th><th class="border border-slate-800 p-2">Nama Siswa</th><th class="border border-slate-800 p-2">L/P</th><th class="border border-slate-800 p-2">Cabor</th><th class="border border-slate-800 p-2">Kategori</th></tr>`;
+                body.innerHTML = data.map((s, i) => `<tr><td class="border border-slate-800 p-2 text-center">${i+1}</td><td class="border border-slate-800 p-2 text-xs">${s.schoolName || (currentUser ? currentUser.schoolName : "-")}</td><td class="border border-slate-800 p-2">${s.nisn}</td><td class="border border-slate-800 p-2 font-bold">${s.fullName}</td><td class="border border-slate-800 p-2 text-center">${s.gender === 'Putra' ? 'L' : 'P'}</td><td class="border border-slate-800 p-2">${s.cabor}</td><td class="border border-slate-800 p-2 text-xs">${s.categories}</td></tr>`).join('');
+            }
+        }
+
+        function printAllSchools() {
+            showLoading(true);
+            google.script.run.withSuccessHandler(data => {
+                showLoading(false);
+                preparePrintView("LAPORAN DAFTAR SEKOLAH TERDAFTAR", "O2SN TINGKAT SEKOLAH DASAR", data, "schools");
+                window.print();
+            }).getAllSchools();
+        }
+
+        function printAllStudents() {
+            showLoading(true);
+            google.script.run.withSuccessHandler(data => {
+                showLoading(false);
+                preparePrintView("REKAPITULASI SELURUH ATLET PESERTA", "SEMUA CABANG OLAHRAGA", data, "all_students");
+                window.print();
+            }).getAllStudents();
+        }
+
+        function printByCabor() {
+            const selectedCabor = document.getElementById('printCaborFilter').value;
+            const selectedGender = document.getElementById('printGenderFilter').value;
+            
+            showLoading(true);
+            google.script.run.withSuccessHandler(data => {
+                showLoading(false);
+                
+                let filtered = data.filter(s => s.cabor === selectedCabor);
+                
+                if (selectedGender !== "Semua") {
+                    filtered = filtered.filter(s => s.gender === selectedGender);
+                }
+                
+                if(filtered.length === 0) return alert("Tidak ada data atlet untuk filter yang dipilih.");
+                
+                const genderSuffix = selectedGender !== "Semua" ? ` (${selectedGender.toUpperCase()})` : "";
+                preparePrintView("REKAPITULASI ATLET PESERTA", "CABANG OLAHRAGA: " + selectedCabor.toUpperCase() + genderSuffix, filtered, "cabor");
+                window.print();
+            }).getAllStudents();
+        }
+
+        function saveAdminSettings() {
+            const n = document.getElementById('settingAppName').value;
+            const l = document.getElementById('settingLogoUrl').value;
+            const u = document.getElementById('settingWebAppUrl').value;
+            showLoading(true);
+            google.script.run.withSuccessHandler(() => { loadAppData(); alert("Pengaturan Diperbarui!"); }).updateSettings(n, l, u);
+        }
+
+        function showModal(t, m) { alert(t + "\n" + m); }
+    </script>
+</body>
+</html>
