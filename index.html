@@ -13,6 +13,7 @@
             .no-print { display: none !important; }
             .print-only { display: block !important; }
             body { background: white; margin: 0; padding: 0; }
+            @page { margin: 1cm; }
         }
         .print-only { display: none; }
     </style>
@@ -272,13 +273,34 @@
                         </div>
                     </div>
 
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-slate-400">
-                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-cogs mr-2"></i> Branding</h4>
-                        <div class="space-y-3">
-                            <input type="text" id="settingAppName" placeholder="Nama Aplikasi" class="w-full px-3 py-1 border rounded text-xs">
-                            <input type="text" id="settingLogoUrl" placeholder="URL Logo" class="w-full px-3 py-1 border rounded text-xs">
-                            <input type="text" id="settingWebAppUrl" placeholder="Web App URL" class="w-full px-3 py-1 border rounded text-xs">
-                            <button onclick="saveAdminSettings()" class="w-full bg-slate-100 text-slate-700 py-1 rounded text-xs font-bold shadow-sm">Update</button>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-slate-400 overflow-y-auto max-h-[300px]">
+                        <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-cogs mr-2 text-slate-600"></i> Pengaturan Aplikasi</h4>
+                        <div class="space-y-3 p-1">
+                            <div>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Nama App</label>
+                                <input type="text" id="settingAppName" placeholder="Nama Aplikasi" class="w-full px-3 py-1 border rounded text-xs">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Logo Utama (Kiri/O2SN)</label>
+                                <input type="text" id="settingLogoUrl" placeholder="URL Logo PNG" class="w-full px-3 py-1 border rounded text-xs">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Logo KKG (Kanan)</label>
+                                <input type="text" id="settingLogoKkgUrl" placeholder="URL Logo KKG PNG" class="w-full px-3 py-1 border rounded text-xs">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Web App URL</label>
+                                <input type="text" id="settingWebAppUrl" placeholder="Web App URL" class="w-full px-3 py-1 border rounded text-xs">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">TTD Ketua Panitia (URL PNG)</label>
+                                <input type="text" id="settingTtdKetuaUrl" placeholder="Link PNG TTD Ketua" class="w-full px-3 py-1 border rounded text-xs">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase font-bold text-slate-400">TTD Admin (URL PNG)</label>
+                                <input type="text" id="settingTtdAdminUrl" placeholder="Link PNG TTD Admin" class="w-full px-3 py-1 border rounded text-xs">
+                            </div>
+                            <button onclick="saveAdminSettings()" class="w-full bg-slate-100 text-slate-700 py-1 rounded text-xs font-bold shadow-sm">Simpan Perubahan</button>
                         </div>
                     </div>
                 </div>
@@ -326,20 +348,47 @@
 
     <!-- PRINT PREVIEW -->
     <div id="printArea" class="print-only p-12 bg-white min-h-screen text-slate-900">
-        <div class="text-center border-b-4 border-double border-slate-800 pb-6 mb-8">
-            <h1 id="printReportTitle" class="text-2xl font-black uppercase mb-1">LAPORAN REKAPITULASI O2SN</h1>
-            <h2 id="printSubTitle" class="text-xl font-bold uppercase mb-2">TINGKAT SEKOLAH DASAR</h2>
-            <p id="printAppBranding" class="text-sm font-medium italic"></p>
+        <!-- Flex Header for Two Logos -->
+        <div class="flex justify-between items-center border-b-4 border-double border-slate-800 pb-4 mb-6">
+            <img id="printLogoLeft" src="" class="h-20 w-auto object-contain" alt="Logo O2SN">
+            <div class="text-center flex-1 mx-4">
+                <h1 id="printReportTitle" class="text-xl font-black uppercase mb-1 line-clamp-2">LAPORAN REKAPITULASI O2SN</h1>
+                <h2 id="printSubTitle" class="text-lg font-bold uppercase mb-1">TINGKAT SEKOLAH DASAR</h2>
+                <p id="printAppBranding" class="text-xs font-medium italic"></p>
+            </div>
+            <img id="printLogoRight" src="" class="h-20 w-auto object-contain" alt="Logo KKG">
         </div>
+
+        <!-- Custom Header Info for School/NPSN -->
+        <div class="mb-4 text-sm">
+            <p id="printHeaderSchool" class="font-bold"></p>
+            <p id="printHeaderNpsn"></p>
+        </div>
+
         <div id="printContentArea">
-            <table class="w-full border-collapse border-2 border-slate-800">
+            <table class="w-full border-collapse border-2 border-slate-800 text-sm">
                 <thead id="printTableHeader"></thead>
                 <tbody id="printTableBody"></tbody>
             </table>
         </div>
+
         <div class="mt-20 grid grid-cols-2 text-center text-sm">
-            <div><p>Mengetahui,</p><p class="font-bold">Ketua Panitia</p><div class="h-24"></div><p>( ........................................ )</p></div>
-            <div><p id="printDatePlaceholder"></p><p class="font-bold">Admin Sistem</p><div class="h-24"></div><p>( ........................................ )</p></div>
+            <div class="flex flex-col items-center">
+                <p>Mengetahui,</p>
+                <p class="font-bold">Ketua Panitia O2SN</p>
+                <div class="h-24 flex items-center justify-center">
+                    <img id="printTtdKetua" src="" class="max-h-20 object-contain hidden" alt="TTD Ketua">
+                </div>
+                <p>( ........................................ )</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <p id="printDatePlaceholder"></p>
+                <p class="font-bold">Admin Sistem</p>
+                <div class="h-24 flex items-center justify-center">
+                    <img id="printTtdAdmin" src="" class="max-h-20 object-contain hidden" alt="TTD Admin">
+                </div>
+                <p>( ........................................ )</p>
+            </div>
         </div>
     </div>
 
@@ -389,10 +438,38 @@
                 appConfig = data;
                 document.getElementById('appName').innerText = data.appName;
                 document.getElementById('appLogo').src = data.logoUrl;
+                
+                // Set Print Logos
+                document.getElementById('printLogoLeft').src = data.logoUrl;
+                const logoKkgEl = document.getElementById('printLogoRight');
+                if(data.logoKkgUrl) {
+                    logoKkgEl.src = data.logoKkgUrl;
+                    logoKkgEl.classList.remove('hidden');
+                } else {
+                    logoKkgEl.classList.add('hidden');
+                }
+
                 if (document.getElementById('printAppBranding')) document.getElementById('printAppBranding').innerText = data.appName;
+                
+                // Set values to admin inputs
                 document.getElementById('settingAppName').value = data.appName;
                 document.getElementById('settingLogoUrl').value = data.logoUrl;
+                document.getElementById('settingLogoKkgUrl').value = data.logoKkgUrl || '';
                 document.getElementById('settingWebAppUrl').value = MANUAL_WEB_APP_URL;
+                document.getElementById('settingTtdKetuaUrl').value = data.ttdKetuaUrl || '';
+                document.getElementById('settingTtdAdminUrl').value = data.ttdAdminUrl || '';
+
+                // Set signature images in print area
+                if(data.ttdKetuaUrl) {
+                    const imgKetua = document.getElementById('printTtdKetua');
+                    imgKetua.src = data.ttdKetuaUrl;
+                    imgKetua.classList.remove('hidden');
+                }
+                if(data.ttdAdminUrl) {
+                    const imgAdmin = document.getElementById('printTtdAdmin');
+                    imgAdmin.src = data.ttdAdminUrl;
+                    imgAdmin.classList.remove('hidden');
+                }
             }
             showLoading(false);
         }
@@ -491,7 +568,7 @@
             if (data) {
                 const table = document.getElementById('studentListTable');
                 table.innerHTML = data.map(s => `
-                    <tr class="border-b hover:bg-slate-50">
+                    <tr class="border-b hover:bg-slate-50 transition-all">
                         <td class="py-2 px-2 font-mono text-xs text-blue-600 font-bold">${s.uniqueCode || 'ATL-' + s.nisn}</td>
                         <td class="py-2 px-2 font-bold">${s.fullName}<br><span class="text-xs text-slate-400">NISN: ${s.nisn}</span></td>
                         <td class="py-2 px-2 text-xs font-semibold">${s.cabor} (${s.gender})</td>
@@ -499,6 +576,9 @@
                     </tr>
                 `).join('');
                 preparePrintView("DAFTAR ATLET: " + currentUser.schoolName, "NPSN: " + currentUser.npsn, data, "school");
+                
+                document.getElementById('printHeaderSchool').innerText = "Nama Sekolah: " + currentUser.schoolName;
+                document.getElementById('printHeaderNpsn').innerText = "NPSN: " + currentUser.npsn;
             }
         }
 
@@ -566,14 +646,29 @@
             document.getElementById('printReportTitle').innerText = title;
             document.getElementById('printSubTitle').innerText = sub;
             document.getElementById('printDatePlaceholder').innerText = "Dicetak: " + new Date().toLocaleDateString('id-ID');
+            
+            if(type !== "school") {
+                document.getElementById('printHeaderSchool').innerText = "";
+                document.getElementById('printHeaderNpsn').innerText = "";
+            }
+
             const h = document.getElementById('printTableHeader');
             const b = document.getElementById('printTableBody');
+            
             if (type === "schools") {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left">ID</th><th class="border border-slate-800 p-2 text-left">NPSN</th><th class="border border-slate-800 p-2 text-left">Sekolah</th><th class="border border-slate-800 p-2 text-left">Kontak</th></tr>`;
-                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2 text-[10px]">SCH-${s[0]}</td><td class="border border-slate-800 p-2 text-xs">${s[0]}</td><td class="border border-slate-800 p-2 text-xs font-bold">${s[3]}</td><td class="border border-slate-800 p-2 text-[10px]">${s[6]}</td></tr>`).join('');
+                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left">No</th><th class="border border-slate-800 p-2 text-left">NPSN</th><th class="border border-slate-800 p-2 text-left">Sekolah</th><th class="border border-slate-800 p-2 text-left">Kontak</th></tr>`;
+                b.innerHTML = data.map((s, index) => `<tr><td class="border border-slate-800 p-2 text-[10px] text-center">${index + 1}</td><td class="border border-slate-800 p-2 text-xs">${s[0]}</td><td class="border border-slate-800 p-2 text-xs font-bold">${s[3]}</td><td class="border border-slate-800 p-2 text-[10px]">${s[6]}</td></tr>`).join('');
             } else {
-                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-left">Kode Atlet (Unik)</th><th class="border border-slate-800 p-2 text-left">Nama</th><th class="border border-slate-800 p-2 text-center">L/P</th><th class="border border-slate-800 p-2 text-left">Cabor</th></tr>`;
-                b.innerHTML = data.map(s => `<tr><td class="border border-slate-800 p-2 font-mono text-[10px] font-bold">${s.uniqueCode || 'ATL-'+s.nisn}</td><td class="border border-slate-800 p-2 text-xs">${s.fullName}</td><td class="border border-slate-800 p-2 text-center text-xs">${s.gender === 'Putra' ? 'L' : 'P'}</td><td class="border border-slate-800 p-2 text-xs">${s.cabor}</td></tr>`).join('');
+                h.innerHTML = `<tr><th class="border border-slate-800 p-2 text-center">No</th><th class="border border-slate-800 p-2 text-left">Nama Atlet</th><th class="border border-slate-800 p-2 text-center">L/P</th><th class="border border-slate-800 p-2 text-left">Cabor</th><th class="border border-slate-800 p-2 text-left">Kategori Lomba</th></tr>`;
+                b.innerHTML = data.map((s, index) => `
+                    <tr>
+                        <td class="border border-slate-800 p-2 text-center text-xs">${index + 1}</td>
+                        <td class="border border-slate-800 p-2 text-xs font-bold">${s.fullName}</td>
+                        <td class="border border-slate-800 p-2 text-center text-xs">${s.gender === 'Putra' ? 'L' : 'P'}</td>
+                        <td class="border border-slate-800 p-2 text-xs">${s.cabor}</td>
+                        <td class="border border-slate-800 p-2 text-[10px]">${s.categories}</td>
+                    </tr>
+                `).join('');
             }
         }
 
@@ -610,7 +705,10 @@
             const data = {
                 newName: document.getElementById('settingAppName').value,
                 newLogo: document.getElementById('settingLogoUrl').value,
-                newWebAppUrl: document.getElementById('settingWebAppUrl').value
+                logoKkgUrl: document.getElementById('settingLogoKkgUrl').value,
+                newWebAppUrl: document.getElementById('settingWebAppUrl').value,
+                ttdKetuaUrl: document.getElementById('settingTtdKetuaUrl').value,
+                ttdAdminUrl: document.getElementById('settingTtdAdminUrl').value
             };
             showLoading(true);
             await callGAS("updateSettings", data);
