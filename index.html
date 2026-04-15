@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <!-- Edit School Modal -->
+    <!-- Edit School Modal (Admin) -->
     <div id="editSchoolModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[110] flex items-center justify-center hidden">
         <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-2xl w-full mx-4 border border-slate-100 max-h-[90vh] overflow-y-auto">
             <h3 class="text-xl font-bold text-slate-800 mb-6">Edit Data Sekolah</h3>
@@ -102,11 +102,51 @@
         </div>
     </div>
 
+    <!-- Edit Student Modal (Sekolah) -->
+    <div id="editStudentModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[110] flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-md w-full mx-4 border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-xl font-bold text-slate-800 mb-6">Edit Data Atlet</h3>
+            <form id="editStudentForm" class="space-y-4">
+                <input type="hidden" name="oldUniqueCode">
+                <input type="hidden" name="cabor" id="editStudentCabor"> <!-- Cabor tidak diizinkan ganti agar kode unik tetap -->
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">NISN (Tidak dapat diubah)</label>
+                    <input type="text" name="nisn" class="w-full px-3 py-2 border rounded-lg bg-slate-50 text-slate-500 cursor-not-allowed" readonly>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Tanggal Lahir</label>
+                    <input type="date" name="birthDate" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Nama Lengkap</label>
+                    <input type="text" name="fullName" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Jenis Kelamin</label>
+                    <select name="gender" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="Putra">Putra</option>
+                        <option value="Putri">Putri</option>
+                    </select>
+                </div>
+                <div id="editCategoryContainer" class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 text-center">Kategori Lomba <span id="editCaborLabel" class="text-blue-600"></span></label>
+                    <div id="editCategoryList" class="space-y-1"></div>
+                </div>
+                
+                <div class="flex gap-2 pt-4">
+                    <button type="button" onclick="handleUpdateStudent()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md">Simpan Perubahan</button>
+                    <button type="button" onclick="toggleEditStudentModal(false)" class="px-6 py-3 text-slate-500 font-medium hover:text-slate-800 border rounded-xl bg-white">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- MAIN APP CONTAINER -->
     <div id="app" class="max-w-6xl mx-auto px-4 py-8 no-print">
         <header class="flex flex-col items-center mb-10 text-center">
             <img id="appLogo" src="https://via.placeholder.com/100" alt="Logo" class="h-24 w-auto mb-4 object-contain">
-            <h1 id="appName" class="text-3xl font-extrabold text-slate-800 tracking-tight uppercase">O2SN TINGKAT SEKOLAH DASAR</h1>
+            <h1 id="appName" class="text-3xl font-extrabold text-slate-800 tracking-tight uppercase">O2SN TINGKAT SD KEC. PESANGGRAHAN</h1>
             <p class="text-slate-500 mt-2">Sistem Informasi Pendaftaran Atlet Peserta O2SN</p>
         </header>
 
@@ -116,7 +156,7 @@
                 <div class="grid md:grid-cols-2 gap-8 items-center mb-12">
                     <div class="space-y-6">
                         <h2 class="text-4xl font-bold text-slate-900 leading-tight">Portal Registrasi O2SN SD</h2>
-                        <p class="text-lg text-slate-600">Pendaftaran resmi atlet tingkat Sekolah Dasar. Data tersimpan otomatis di Google Spreadsheet Anda.</p>
+                        <p class="text-lg text-slate-600">Pendaftaran resmi atlet tingkat Sekolah Dasar. Silahkan daftar terlebih dahulu sebelum login.</p>
                         <div class="flex flex-wrap gap-4">
                             <button onclick="showView('login')" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all">Login Sekolah</button>
                             <button onclick="showView('register')" class="bg-white border-2 border-slate-200 hover:border-blue-600 text-slate-700 px-8 py-3 rounded-xl font-semibold transition-all">Daftar Akun Baru</button>
@@ -267,6 +307,7 @@
                                         <th class="py-3 px-2">Nama Siswa</th>
                                         <th class="py-3 px-2">Cabor</th>
                                         <th class="py-3 px-2">Kategori</th>
+                                        <th class="py-3 px-2 text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="studentListTable"></tbody>
@@ -622,7 +663,13 @@
             showLoading(true);
             const res = await callGAS("addStudent", data);
             showLoading(false);
-            if(res && res.success) { form.reset(); updateCategories(); loadSchoolStudents(); alert("Atlet berhasil terdaftar! Kode: " + studentCode); }
+            if(res && res.success) { 
+                form.reset(); 
+                updateCategories(); 
+                await loadSchoolStudents(); 
+                await loadCaborStats(); // Refresh dashboard stats
+                alert("Atlet berhasil terdaftar! Kode: " + studentCode); 
+            }
         }
 
         async function loadSchoolStudents() {
@@ -634,12 +681,129 @@
                     <tr class="border-b hover:bg-slate-50 transition-all">
                         <td class="py-2 px-2 font-mono text-xs text-blue-600 font-bold">${s.uniqueCode || 'ATL-' + s.nisn}</td>
                         <td class="py-2 px-2 font-bold uppercase text-xs">${s.fullName}<br><span class="text-[9px] text-slate-400 font-normal">NISN: ${s.nisn}</span></td>
-                        <td class="py-2 px-2 text-[10px] font-semibold uppercase">${s.cabor} (${s.gender})</td>
+                        <td class="py-2 px-2 text-[10px] font-semibold uppercase">${s.cabor} <br><span class="text-slate-400">(${s.gender})</span></td>
                         <td class="py-2 px-2 text-[9px] italic text-slate-500 uppercase">${s.categories}</td>
+                        <td class="py-2 px-2 text-center">
+                            <div class="flex justify-center gap-2">
+                                <button type="button" onclick="openEditStudent('${s.uniqueCode || ''}', '${s.nisn}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 p-1.5 rounded transition-colors" title="Edit Atlet">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" onclick="handleDeleteStudent('${s.uniqueCode || ''}', '${s.nisn}')" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-1.5 rounded transition-colors" title="Hapus Atlet">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 `).join('');
             }
         }
+        
+        // --- FITUR BARU: EDIT & HAPUS ATLET (SEKOLAH) ---
+        function toggleEditStudentModal(s) { document.getElementById('editStudentModal').classList.toggle('hidden', !s); }
+
+        function openEditStudent(uniqueCode, nisn) {
+            const targetCode = uniqueCode ? uniqueCode : ('ATL-' + nisn);
+            const student = cachedSchoolStudents.find(s => (s.uniqueCode || 'ATL-'+s.nisn) === targetCode);
+            if(!student) return alert("Error: Data atlet tidak ditemukan.");
+            
+            const form = document.getElementById('editStudentForm');
+            form.oldUniqueCode.value = student.uniqueCode || 'ATL-'+student.nisn;
+            form.nisn.value = student.nisn;
+            
+            // Format tanggal yang kompatibel dengan input type="date" (YYYY-MM-DD)
+            let formattedDate = student.birthDate;
+            if (formattedDate && formattedDate.includes('T')) {
+                formattedDate = formattedDate.split('T')[0];
+            }
+            form.birthDate.value = formattedDate;
+            form.fullName.value = student.fullName;
+            form.gender.value = student.gender;
+            form.cabor.value = student.cabor; 
+            
+            document.getElementById('editCaborLabel').innerText = `(${student.cabor})`;
+
+            // Load Checklist Cabor saat di Edit
+            const list = document.getElementById('editCategoryList');
+            list.innerHTML = "";
+            let items = [];
+            const cabor = student.cabor;
+            if(cabor === 'Renang') items = ['Gaya Bebas', 'Gaya Dada', 'Gaya Punggung', 'Gaya Kupu-kupu'];
+            else if(cabor === 'Atletik') items = ['Kanga Escape', 'Formula 1'];
+            else if(cabor === 'Bulutangkis') items = ['Tunggal'];
+            else if(cabor === 'Pencak Silat') items = ['Jurus Tunggal (Wajib)', 'Tanding Kelas H (40-42 Kg)'];
+            else if(cabor === 'Senam') items = ['Perorangan Serba Bisa'];
+            
+            const selectedArr = student.categories ? student.categories.split(',').map(s => s.trim()) : [];
+
+            items.forEach(item => {
+                const isSilatWajib = item.includes('(Wajib)');
+                const isChecked = selectedArr.includes(item) || isSilatWajib;
+                list.innerHTML += `<label class="flex items-center gap-2 text-xs py-1"><input type="checkbox" name="categories" value="${item}" ${isChecked ? 'checked' : ''} ${isSilatWajib ? 'disabled' : ''}> ${item}</label>`;
+            });
+
+            toggleEditStudentModal(true);
+        }
+
+        async function handleUpdateStudent() {
+            const form = document.getElementById('editStudentForm');
+            const data = Object.fromEntries(new FormData(form));
+            
+            // Ambil checkbox kategori yang tercentang (termasuk yang didisable karena wajib)
+            const checks = Array.from(form.querySelectorAll('input[name="categories"]:checked'));
+            const disabledChecks = Array.from(form.querySelectorAll('input[name="categories"]:disabled:checked'));
+            const allChecks = [...new Set([...checks, ...disabledChecks])];
+            
+            data.categories = allChecks.map(c => c.value);
+            data.npsn = currentUser.npsn;
+            
+            if(data.categories.length === 0) return alert("Pilih minimal satu kategori perlombaan!");
+
+            showLoading(true);
+            const res = await callGAS("updateStudent", data);
+            showLoading(false);
+            
+            if(res && res.success) { 
+                alert("Data atlet berhasil diperbarui!"); 
+                toggleEditStudentModal(false); 
+                await loadSchoolStudents(); 
+                await loadCaborStats(); // Refresh dashboard stats
+            } else {
+                alert("Gagal update: " + (res ? res.message : "Tidak diketahui") + "\n\n(Pastikan script Code.gs sudah Anda update terbaru)");
+            }
+        }
+
+        // FUNGSI DELETE YANG DIPERBAIKI
+        async function handleDeleteStudent(uniqueCode, nisn) {
+            // Fallback cerdas untuk data lama jika UniqueCode kosongan
+            const targetCode = uniqueCode ? uniqueCode : ("ATL-" + nisn);
+            
+            if(!confirm("Apakah Anda yakin ingin menghapus atlet ini? Data yang dihapus tidak dapat dikembalikan.")) {
+                return;
+            }
+            
+            showLoading(true);
+            try {
+                const res = await callGAS("deleteStudent", { 
+                    uniqueCode: targetCode, 
+                    npsn: currentUser.npsn,
+                    nisn: nisn // Menyertakan NISN untuk keamanan data
+                });
+                
+                if(res && res.success) { 
+                    alert("Data atlet berhasil dihapus!"); 
+                    await loadSchoolStudents(); // Refresh tabel sekolah seketika
+                    await loadCaborStats();     // Update jumlah Total Atlet di Dashboard
+                } else {
+                    alert("Gagal menghapus: " + (res ? res.message : "Sistem menolak perintah.") + "\n\nINFO PENTING: Pastikan script Code.gs di Google Apps Script Anda sudah diperbarui dengan script terakhir dari saya.");
+                }
+            } catch (err) {
+                console.error("Delete Error:", err);
+                alert("Terjadi kesalahan jaringan/sistem saat mencoba menghapus data.");
+            } finally {
+                showLoading(false);
+            }
+        }
+        // --- AKHIR FITUR BARU ---
 
         async function loadAdminData() {
             showLoading(true);
