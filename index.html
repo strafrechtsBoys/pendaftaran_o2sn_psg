@@ -149,6 +149,11 @@
                                 <p class="font-bold text-sm">Bulutangkis</p>
                                 <p id="stats-Bulutangkis" class="text-[10px] text-slate-400 font-medium mt-1 bg-slate-50 rounded-full py-1">0 Atlet</p>
                             </div>
+                            <div class="bg-white p-4 rounded-2xl shadow-sm text-center border border-slate-100">
+                                <i class="fas fa-users text-indigo-500 text-3xl mb-2"></i>
+                                <p class="font-bold text-sm">Total Atlet</p>
+                                <p id="stats-Total" class="text-[10px] text-slate-400 font-medium mt-1 bg-indigo-50 rounded-full py-1">0 Atlet</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -520,10 +525,16 @@
         async function loadCaborStats() {
             const stats = await callGAS("getCaborStats");
             if (stats) {
+                let totalAtlet = 0;
                 for (const cabor in stats) {
                     const el = document.getElementById('stats-' + cabor);
                     if (el) el.innerText = stats[cabor] + " Atlet";
+                    // Tambahkan ke jumlah total
+                    totalAtlet += parseInt(stats[cabor]) || 0;
                 }
+                // Update elemen Total Atlet
+                const totalEl = document.getElementById('stats-Total');
+                if (totalEl) totalEl.innerText = totalAtlet + " Atlet";
             }
         }
 
